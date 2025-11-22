@@ -1,13 +1,11 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import VendedorLayout from "componentes/layout/VendedorLayout";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <VendedorLayout>
+      <h1>Bienvenido al Sistema de Ventas</h1>
+      <p>Selecciona una opción del menú para comenzar</p>
+    </VendedorLayout>
+  );
 }
