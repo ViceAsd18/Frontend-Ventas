@@ -1,3 +1,29 @@
 body {
   margin: 0;
 }
+
+
+.tabla-productos {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr; /* móvil por defecto */
+}
+
+@media (min-width: 768px) {
+  .tabla-productos {
+    grid-template-columns: 1fr 1fr; /* tablets: 2 por fila */
+  }
+}
+
+@media (min-width: 1024px) {
+  .tabla-productos {
+    grid-template-columns: 1fr 1fr 1fr; /* desktop: 3 por fila */
+  }
+}
+
+@media (min-width: 1440px) {
+  .tabla-productos {
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* desktop grande: 4 por fila */
+  }
+}
+

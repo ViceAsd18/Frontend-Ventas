@@ -183,7 +183,7 @@ const VendedorLayout = ({ children }: { children: React.ReactNode }) => {
                 </Content>
 
                 <Footer style={footerStyle}>
-                    © 2025 Sistema Gesto de Ventas
+                    © 2025 Sistema Gestor de Ventas
                 </Footer>
             </Layout>
         </Layout>
