@@ -8,14 +8,14 @@ interface Props {
     width?: number | string;
 }
 
-const Buscador = ({ placeholder = "Buscar...", value, onChange, width = "100%"}: Props) => {
+const Buscador = ({ placeholder = "Buscar...", value, onChange, width = 250}: Props) => {
     return (
         <Input
             placeholder={placeholder}
             prefix={<SearchOutlined />}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            style={{ width }}
+            style={{ maxWidth: width }}
             allowClear
         />
     );

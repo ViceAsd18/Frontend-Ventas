@@ -28,7 +28,7 @@ const BarraFiltros = ({ busqueda, onBusquedaChange, categoria, onCategoriaChange
                 value={busqueda}
                 onChange={onBusquedaChange}
                 placeholder="Buscar producto..."
-                width={200}
+                width={250}
             />
 
             <Select

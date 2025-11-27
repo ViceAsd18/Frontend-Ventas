@@ -1,15 +1,11 @@
 import VendedorLayout from "componentes/layout/VendedorLayout"
 
-
-const OrdenesPage = () => {
-
-
+const CrearOrdenPage = () => {
     return (
         <VendedorLayout>
-            <h1>Pagina para las ordenes</h1>
+            <div>Crear Orden Page</div>
         </VendedorLayout>
-
     )
 }
 
-export default OrdenesPage
+export default CrearOrdenPage

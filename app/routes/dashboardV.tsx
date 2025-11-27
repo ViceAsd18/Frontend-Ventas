@@ -1,4 +1,4 @@
-import DashboardPage from "componentes/paginas/DashboardPage";
+import DashboardPage from "componentes/paginas/dashboard/DashboardPage";
 
 const dashboard = () => {
     return (<DashboardPage />)

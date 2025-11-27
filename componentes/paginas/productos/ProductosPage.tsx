@@ -3,18 +3,16 @@ import { Card, Space, Typography } from "antd"
 import { useState } from "react"
 import type { Producto } from "modelo/productoModel"
 import { productosMock } from "modelo/productoModel"
-import BarraFiltros from "../../componentes/moleculas/BarraFiltros"
 import { useNavigate } from "react-router"
 import CatalogoProductos from "componentes/organismo/CatalogoProductos"
 import Titulo from "componentes/atomos/Titulo"
+import ControlsTabla from "componentes/moleculas/ControlsTabla"
 
-const { Title } = Typography;
 
 const ProductosPage = () => {
     const [productos] = useState<Producto[]>(productosMock);
     const [busqueda, setBusqueda] = useState("");
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<string>();
-    const [disponibilidadSeleccionada, setDisponibilidadSeleccionada] = useState<string>();
 
     const navigate = useNavigate();
 
@@ -24,41 +22,36 @@ const ProductosPage = () => {
 
     };
 
-    // Filtrar productos
     const productosFiltrados = productos.filter(producto => {
-        const coincideBusqueda = producto.nombre.toLowerCase().includes(busqueda.toLowerCase());
-        const coincideCategoria = !categoriaSeleccionada || producto.categoria === categoriaSeleccionada;
-        
-        let coincideDisponibilidad = true;
-        if (disponibilidadSeleccionada === "En stock") {
-            coincideDisponibilidad = producto.stock > 0;
-        } else if (disponibilidadSeleccionada === "Stock Bajo") {
-            coincideDisponibilidad = producto.stock > 0 && producto.stock <= 50;
-        } else if (disponibilidadSeleccionada === "Sin Stock") {
-            coincideDisponibilidad = producto.stock === 0;
-        }
+        const coincideBusqueda = producto.nombre
+            .toLowerCase()
+            .includes(busqueda.toLowerCase());
 
+        const coincideCategoria =
+            !categoriaSeleccionada || producto.categoria === categoriaSeleccionada;
 
-        return coincideBusqueda && coincideCategoria && coincideDisponibilidad;
+        return coincideBusqueda && coincideCategoria;
     });
 
+
+    const opcionesCategoria = ["Electrónica", "Wearables"];
 
 
     return (
         <VendedorLayout>
             <Card>
                 <Space direction="vertical" style={{ width: "100%" }} size="large">
-                    <Title level={2} style={{ margin: 0 }}>
-                        Gestión de Productos
-                    </Title>
+                    <Titulo nivel={1}>Listado de Productos</Titulo>
                     
-                    <BarraFiltros
+                    <ControlsTabla
                         busqueda={busqueda}
                         onBusquedaChange={setBusqueda}
-                        categoria={categoriaSeleccionada}
-                        onCategoriaChange={setCategoriaSeleccionada}
-                        disponibilidad={disponibilidadSeleccionada}
-                        onDisponibilidadChange={setDisponibilidadSeleccionada}
+                        filtro={categoriaSeleccionada}
+                        onFiltroChange={setCategoriaSeleccionada}
+                        opcionesFiltro={opcionesCategoria}
+                        placeholderBusqueda="Buscar producto..."
+                        textoBoton="Agregar Producto"
+                        onBotonClick={() => navigate("/crear-producto")}
                     />
 
                     <CatalogoProductos
