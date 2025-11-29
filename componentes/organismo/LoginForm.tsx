@@ -1,11 +1,13 @@
 import { Form, Input, Button, Card } from "antd";
 import Titulo from "componentes/atomos/Titulo";
 import { useNavigate } from "react-router";
+import { login } from "services/auth";
 
 interface Props {
     onLogin: (email: string, password: string) => void;
     loading?: boolean;
 }
+
 
 
 const LoginForm = ({ onLogin, loading = false }: Props) => {
@@ -80,8 +82,26 @@ const LoginForm = ({ onLogin, loading = false }: Props) => {
         }
     };
 
-    const handleSubmit = (values: any) => {
-        onLogin(values.email, values.password);
+    const handleSubmit = async (values: any) => {
+        try {
+            const data = await login(values.email, values.password);
+
+            //Guardar token en localStorage
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            //Redirigir según rol
+            if (data.user.role === "cliente") {
+                navigate("/");
+            } else if (data.user.role === "empleado") {
+                navigate("/dashboard");
+            } else {
+                navigate('/'); //Fallback por si no se reconoce el rol
+            }
+
+        } catch (error) {
+            console.error("Error al iniciar sesion:", error);
+        }
     };
 
     return (

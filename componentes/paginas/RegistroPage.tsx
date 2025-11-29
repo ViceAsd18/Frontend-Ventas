@@ -1,7 +1,9 @@
+import RegisterForm from "componentes/organismo/RegistroForm"
+
 const RegistroPage = () => {
     return (
         <div>
-            Pagina para el registro
+            <RegisterForm/>
         </div>
     )
 }
