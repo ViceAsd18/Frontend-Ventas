@@ -25,6 +25,16 @@ export interface Orden {
     }[];
 }
 
+export interface OrdenDetalleInput {
+    id_producto: number;
+    cantidad: number;
+}
+
+export interface CrearOrdenInput {
+    id_cliente: number;
+    productos: OrdenDetalleInput[];
+}
+
 export const getOrdenes = async (): Promise<Orden[]> => {
     const response = await api.get("/ventas"); 
     return response.data;
@@ -40,3 +50,4 @@ export const crearOrden = async (orden: any) => {
     const response = await api.post("/ventas", orden);
     return response.data;
 };
+

@@ -1,23 +1,17 @@
-import { Card, Col, Row } from "antd"
-import VendedorLayout from "componentes/layout/VendedorLayout"
+import { Row, Col } from "antd";
+import VendedorLayout from "componentes/layout/VendedorLayout";
+import DashboardPanel from "componentes/organismo/Vendedor/DashboardPanel";
 
 const DashboardPage = () => {
     return (
         <VendedorLayout>
             <Row gutter={16}>
-                <Col span={8}>
-                    <Card title="Ventas Hoy">$5,000</Card>
-                </Col>
-                <Col span={8}>
-                    <Card title="Órdenes Pendientes">15</Card>
-                </Col>
-
-                <Col span={8}>
-                    <Card title="Productos Activos">42</Card>
+                <Col span={24}>
+                    <DashboardPanel></DashboardPanel>
                 </Col>
             </Row>
         </VendedorLayout>
-    )
-}
+    );
+};
 
-export default DashboardPage
+export default DashboardPage;

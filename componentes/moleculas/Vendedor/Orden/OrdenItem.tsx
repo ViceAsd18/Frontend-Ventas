@@ -36,11 +36,18 @@ const precioStyle: React.CSSProperties = {
 };
 
 const OrdenItem = ({ producto, onCantidadChange, onEliminar }: Props) => {
+    const normalizarNombre = (nombre: string) =>
+        nombre.toLowerCase()
+            .replace(/ /g, "_")
+
+    const nombreImagen = normalizarNombre(producto.nombre_producto);
+
+
     return (
         <div style={filaStyle}>
             <div style={infoStyle}>
                     <Imagen
-                        src={producto.nombre_producto ? producto.nombre_producto : "/placeholder.png"}
+                        src={`/assets/img/productos/${nombreImagen}.jpg`}
                         alt={producto.nombre_producto}
                         width={50}
                         height={50}
