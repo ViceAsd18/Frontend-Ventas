@@ -1,5 +1,6 @@
 import { LogoutOutlined } from "@ant-design/icons"
 import { Avatar, Dropdown, type MenuProps } from "antd"
+import { useAuth } from "auth/AuthContext";
 import { useNavigate } from "react-router"
 
 
@@ -49,9 +50,14 @@ const UsuarioSidebar = ({ colapsado }: { colapsado?: boolean }) => {
             icon: <LogoutOutlined />,
             onClick: () => {
                 navigate("/login");
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+
             }
         }
     ]
+
+    const { user } = useAuth(); 
 
     return (
         <div style={contenedorStyle}>
@@ -67,10 +73,10 @@ const UsuarioSidebar = ({ colapsado }: { colapsado?: boolean }) => {
                     {!colapsado && (
                         <div style={{ textAlign: 'center' }}>
                             <div style={nombreUsuarioStyle}>
-                                Nombre Usuario
+                                {user?.nombre || 'Nombre Usuario'}
                             </div>
                             <div style={rolUsuarioStyle}>
-                                Rol Usuario
+                                {user?.rol}
                             </div>
                         </div>
                     )}

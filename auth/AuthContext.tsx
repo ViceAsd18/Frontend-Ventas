@@ -1,7 +1,6 @@
 // AuthContext.tsx
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { getProfile } from "services/auth";
-
 import { type User } from "modelo/User";
 
 interface AuthContextType {
@@ -10,6 +9,8 @@ interface AuthContextType {
     login: (data: { user: User; token: string }) => void;
     logout: () => void;
     refreshProfile: () => Promise<void>;
+    loading: boolean;
+
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -39,6 +40,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return null;
     });
 
+    const [loading, setLoading] = useState(true);
+
+
+
     const login = (data: { user: User; token: string }) => {
         setUser(data.user);
         setToken(data.token);
@@ -66,15 +71,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    // Opcional: actualizar perfil automáticamente al montar
     useEffect(() => {
-        if (token && !user) {
-            refreshProfile();
-        }
+        const init = async () => {
+            if (token && !user) {
+                await refreshProfile();
+            }
+            setLoading(false); 
+        };
+        init();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, refreshProfile }}>
+        <AuthContext.Provider value={{ user, token, login, logout, refreshProfile, loading }}>
             {children}
         </AuthContext.Provider>
     );

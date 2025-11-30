@@ -148,7 +148,6 @@ const VendedorLayout = ({ children }: { children: React.ReactNode }) => {
                 </Drawer>   
             )}
 
-            {/* Layout principal */}
             <Layout style={layoutContenidoStyle}>
                 <Header style={headerStyle}>
                     <div style={contenedorTituloStyle}>

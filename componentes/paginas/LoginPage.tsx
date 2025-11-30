@@ -16,9 +16,6 @@ const LoginPage = () => {
             //Hacemos login
             const loginData: AuthResponse = await loginRequest(email, password);
 
-            //Guar token en localStorage
-            localStorage.setItem("token", loginData.access_token);
-
             console.log("Token a enviar:", loginData.access_token);
             //Pasar token para obtener profile
             const user: User = await getProfile(loginData.access_token);
