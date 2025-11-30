@@ -1,30 +1,56 @@
-import VendedorLayout from "componentes/layout/VendedorLayout"
+import { useEffect, useState } from "react";
+import { getClientes } from "services/usuario";
+import VendedorLayout from "componentes/layout/VendedorLayout";
 import Titulo from "componentes/atomos/Titulo";
 import CrearOrden from "componentes/organismo/Vendedor/CrearOrden";
-import { productosMock } from "modelo/productoModel";
-
-const clientesMock = ["Carlos Santana", "Elena Rodríguez", "Javier Gómez", "Sofía López"];
+import { getProductos, type Producto } from "services/productos";
 
 const CrearOrdenPage = () => {
+    const [clientes, setClientes] = useState([]);
+    const [productos, setProductos] = useState<Producto[]>([]);
 
-    const handleGenerarOrden = (cliente : string, productos : any[]) => {
-        console.log("Orden generada para:", cliente);
+    useEffect(() => {
+        const fetchClientes = async () => {
+            try {
+                const data = await getClientes();
+                setClientes(data);
+            } catch (error) {
+                console.error("Error cargando clientes", error);
+            }
+        };
+
+        fetchClientes();
+    }, []);
+
+    useEffect(() => {
+        const fetchProductos = async () => {
+            try {
+                const data = await getProductos();
+                setProductos(data);
+            } catch (error) {
+                console.error("Error cargando productos", error);
+            }
+        };
+
+        fetchProductos();
+    }, []);
+
+    const handleGenerarOrden = (clienteId: number, productos: any[]) => {
+        console.log("Orden generada para:", clienteId);
         console.log("Productos en la orden:", productos);
-        //Llamar API
-    }
+    };
 
     return (
         <VendedorLayout>
             <Titulo>Crear Nueva Orden</Titulo>
 
             <CrearOrden
-                productosDisponibles={[productosMock[0], productosMock[1], productosMock[2]]}
-                clientes={clientesMock}
+                productosDisponibles={productos}
+                clientes={clientes}
                 onGenerarOrden={handleGenerarOrden}
-            >
-            </CrearOrden>
+            />
         </VendedorLayout>
-    )
-}
+    );
+};
 
-export default CrearOrdenPage
+export default CrearOrdenPage;

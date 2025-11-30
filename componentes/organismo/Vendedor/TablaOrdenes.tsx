@@ -1,6 +1,6 @@
 import { Table, Button, Space, Tag } from "antd";
 import type { Dispatch, SetStateAction } from "react";
-import type { Orden } from "modelo/Orden";
+import type { Orden } from "services/orden";
 import ControlsTabla from "componentes/moleculas/Vendedor/ControlsTabla";
 
 interface Props {
@@ -16,9 +16,9 @@ interface Props {
 }
 
 const estadosColor: Record<string, string> = {
-    Pendiente: "orange",
-    Pagado: "green",
-    Cancelado: "red",
+    pendiente: "orange",
+    completada: "green",
+    cancelada: "red",
 };
 
 const TablaOrdenes = ({
@@ -29,15 +29,19 @@ const TablaOrdenes = ({
 }: Props) => {
     
     const columnas = [
-        { title: "ID Orden", dataIndex: "id", key: "id", width: "10%" },
-        { title: "Cliente", dataIndex: "cliente", key: "cliente", width: "25%" },
-        { title: "Fecha", dataIndex: "fecha", key: "fecha", width: "15%" },
+        { title: "ID Orden", dataIndex: "id_venta", key: "id_venta", width: "10%" },
+        { title: "Cliente", dataIndex: ["usuario","nombre"], key: "cliente", width: "25%" },
+        { title: "Fecha", dataIndex: "fecha_venta", key: "fecha_venta", width: "15%", 
+          render : (fecha: string) => new Date(fecha).toLocaleString()
+        },
+        
         {
             title: "Monto Total",
-            dataIndex: "montoTotal",
-            key: "montoTotal",
+            dataIndex: "total",
+            key: "total",
             width: "15%",
-            render: (monto: number) => `$${monto.toLocaleString()}`,
+            render: (monto?: number) => `$${(monto ?? 0).toLocaleString()}`,
+
         },
         {
             title: "Estado",
@@ -58,7 +62,7 @@ const TablaOrdenes = ({
                         Ver detalle
                     </Button>
 
-                    {orden.estado === "Pendiente" && (
+                    {orden.estado === "pendiente" && (
                         <>
                             <Button type="primary" onClick={() => onPagarOrden(orden)}>
                                 Pagar
@@ -77,7 +81,7 @@ const TablaOrdenes = ({
 
     const ordenesFiltradas = ordenes.filter(
         (o) =>
-            o.cliente.toLowerCase().includes(busqueda.toLowerCase()) &&
+            o.usuario.nombre.toLowerCase().includes(busqueda.toLowerCase()) &&
             (!estadoFiltro || o.estado === estadoFiltro)
     );
 
@@ -88,7 +92,7 @@ const TablaOrdenes = ({
                 onBusquedaChange={onBusquedaChange}
                 filtro={estadoFiltro}
                 onFiltroChange={onEstadoChange}
-                opcionesFiltro={["Pendiente", "Pagado", "Cancelado"]}
+                opcionesFiltro={["pendiente", "completada", "cancelada"]}
                 placeholderBusqueda="Buscar por cliente..."
                 textoBoton="Nueva Orden"
                 onBotonClick={onNuevaOrden}

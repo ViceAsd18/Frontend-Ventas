@@ -4,7 +4,7 @@ import ProductoFila from "componentes/moleculas/Vendedor/Orden/ProductoFila";
 import OrdenItem from "componentes/moleculas/Vendedor/Orden/OrdenItem";
 import Boton from "componentes/atomos/Boton";
 import SelectOpciones from "componentes/atomos/SelectOpciones";
-import type { Producto } from "modelo/productoModel";
+import type { Producto } from "services/productos";
 import Titulo from "componentes/atomos/Titulo";
 import ModalPago from "componentes/moleculas/Vendedor/ModalPago";
 
@@ -26,8 +26,8 @@ const estiloPanelOrden: React.CSSProperties = {
 
 type Props = {
     productosDisponibles: Producto[];
-    clientes: string[];
-    onGenerarOrden: (cliente: string, productos: (Producto & { cantidad: number })[]) => void;
+    clientes: { id_usuario: number; nombre: string }[];
+    onGenerarOrden: (clienteId: number, productos: (Producto & { cantidad: number })[]) => void;
 };
 
 const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) => {
@@ -39,19 +39,19 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) =
     search → texto del buscador de productos
     */
     const [productosEnCarrito, setProductosEnCarrito] = useState<(Producto & { cantidad: number })[]>([]);
-    const [cliente, setCliente] = useState<string>();
+    const [cliente, setCliente] = useState<number>();
     const [modalPagoVisible, setModalPagoVisible] = useState(false);
     const [search, setSearch] = useState("");
 
     //Agregar producto al carrito
     const agregarProducto = (producto: Producto) => {
         setProductosEnCarrito(prev => {
-            const isPresent = prev.find(p => p.id === producto.id);
-
+            const isPresent = prev.find(p => p.id_producto === producto.id_producto);
+            
             //Si ya existe, solo aumenta cantidad
             if (isPresent) {
                 return prev.map(p =>
-                    p.id === producto.id ? { ...p, cantidad: p.cantidad + 1 } : p
+                    p.id_producto === producto.id_producto ? { ...p, cantidad: p.cantidad + 1 } : p
                 );
             }
 
@@ -63,14 +63,14 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) =
     //Actualizar cantidad de un producto
     const actualizarCantidad = (id: number, cantidad: number) => {
         setProductosEnCarrito(prev =>
-            prev.map(p => (p.id === id ? { ...p, cantidad } : p))
+            prev.map(p => (p.id_producto === id ? { ...p, cantidad } : p))
         );
     };
 
     //Eliminar producto del carrito
     const eliminarProducto = (id: number) => {
         setProductosEnCarrito(prev =>
-            prev.filter(p => p.id !== id)
+            prev.filter(p => p.id_producto !== id)
         );
     };
 
@@ -85,8 +85,8 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) =
     2. Aplica el buscador
     */
     const productosFiltrados = productosDisponibles
-        .filter(p => !productosEnCarrito.some(pe => pe.id === p.id))
-        .filter(p => p.nombre.toLowerCase().includes(search.toLowerCase()));
+        .filter(p => !productosEnCarrito.some(pe => pe.id_producto === p.id_producto))
+        .filter(p => p.nombre_producto.toLowerCase().includes(search.toLowerCase()));
 
     return (
         <>
@@ -101,7 +101,7 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) =
                     />
                     {productosFiltrados.map(producto => (
                         <ProductoFila
-                            key={producto.id}
+                            key={producto.id_producto}
                             producto={producto}
                             onAgregar={agregarProducto}
                         />
@@ -114,16 +114,21 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) =
                     <SelectOpciones
                         valor={cliente}
                         onChange={setCliente}
-                        opciones={clientes}
+                        opciones={clientes.map(c => ({
+                            label: c.nombre,
+                            value: c.id_usuario
+                        }))}
                         placeholder="Seleccione un cliente"
                     />
+
+
 
                     <Divider />
 
                     <div style={{ maxHeight: 350, overflowY: "auto" }}>
                         {productosEnCarrito.map(p => (
                             <OrdenItem
-                                key={p.id}
+                                key={p.id_producto}
                                 producto={p}
                                 onCantidadChange={actualizarCantidad}
                                 onEliminar={eliminarProducto}
@@ -161,7 +166,7 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) =
                 visible={modalPagoVisible}
                 onClose={() => setModalPagoVisible(false)}
                 total={totalOrden}
-                cliente={cliente || ""}
+                cliente={clientes.find(c => c.id_usuario === cliente)?.nombre ?? ""}
                 ordenId={1234}
                 onRegistrarPago={(monto) => console.log("Pago:", monto)}
             />

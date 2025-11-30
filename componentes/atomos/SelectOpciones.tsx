@@ -1,9 +1,14 @@
 import { Select } from "antd";
 
+type Opcion = {
+    label: string;
+    value: number;
+};
+
 type Props = {
-    opciones: string[];
-    valor?: string;
-    onChange: (value: string) => void;
+    opciones: Opcion[];
+    valor?: number;
+    onChange: (value:  number) => void;
     placeholder?: string;
 };
 
@@ -20,7 +25,7 @@ const SelectOpciones = ({ opciones, valor, onChange, placeholder }: Props) => (
                 .toLowerCase()
                 .includes(input.toLowerCase())
         }
-        options={opciones.map(o => ({ label: o, value: o }))}
+        options={opciones}
     />
 );
 

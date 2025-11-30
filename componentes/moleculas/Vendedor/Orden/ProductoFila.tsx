@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Row, Col, Space, InputNumber, Tag, Typography } from "antd";
 import Boton from "componentes/atomos/Boton";
-import type { Producto } from "modelo/productoModel";
+import type { Producto } from "services/productos";
 import BadgeStock from "componentes/atomos/BadgeStock";
 import BadgeCategoria from "componentes/atomos/BadgeCategoria";
 import Imagen from "componentes/atomos/ImagenProducto";
-import type { Color } from "antd/es/color-picker";
 
 type Props = {
     producto: Producto;
@@ -29,14 +28,20 @@ const contenedorBtn : React.CSSProperties = {
 }
 
 
+
 const ProductoFila = ({ producto, onAgregar }: Props) => {
+
+    const nombreImg = producto.nombre_producto
+        .toLowerCase()          
+        .replace(/\s+/g, "_");  
+
     return (
         <Row align="middle" justify="space-between" style={rowStyle}>
             <Col flex="1 1 auto">
                 <Space align="start">
                     <Imagen
-                        src={producto.imagen}
-                        alt={producto.nombre}
+                        src={"/assets/img/productos/" + nombreImg + ".jpg"}
+                        alt={producto.nombre_producto}
                         style={{
                             width: 60,
                             height: 60,
@@ -46,11 +51,11 @@ const ProductoFila = ({ producto, onAgregar }: Props) => {
                     />
                     <div>
                         <div style={{ fontWeight: 600, fontSize: 14 }}>
-                            {producto.nombre}
+                            {producto.nombre_producto}
                         </div>
 
                         <div style={{ marginTop: 6 , gap: 6, display: "flex", alignItems: "center"  }}>
-                            <BadgeCategoria categoria={producto.categoria}/>
+                            <BadgeCategoria categoria={producto.categoria.nombre_categoria}/>
                             <BadgeStock stock={producto.stock}></BadgeStock>
                         </div>
                     </div>

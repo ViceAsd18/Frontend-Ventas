@@ -1,4 +1,7 @@
-import { Modal, Input, Form, Space, message } from "antd";
+import { Modal, Input, Form, Space, Typography, Divider, message } from "antd";
+
+
+const { Text, Title } = Typography;
 
 interface Props {
     visible: boolean;
@@ -15,15 +18,15 @@ const ModalPago = ({ visible, onClose, ordenId, cliente, total, onRegistrarPago 
     const handleOk = () => {
         form.validateFields().then(values => {
             const montoRecibido = Number(values.monto);
+
             if (montoRecibido !== total) {
                 message.error(`El monto recibido debe ser exactamente $${total.toLocaleString()}`);
                 return;
             }
+
             onRegistrarPago(montoRecibido);
-            onClose();
         });
     };
-
 
     return (
         <Modal
@@ -32,13 +35,18 @@ const ModalPago = ({ visible, onClose, ordenId, cliente, total, onRegistrarPago 
             onCancel={onClose}
             onOk={handleOk}
             okText="Registrar Pago"
-            cancelText="Cancelar"
+            cancelText="Cerrar"
         >
-            <Space direction="vertical" style={{ width: "100%" }}>
+            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
 
-                <p><strong>Cliente:</strong> {cliente}</p>
-                <p><strong>Total a pagar:</strong> ${total.toLocaleString()}</p>
-                <p><strong>Método:</strong> Efectivo</p>
+                <div>
+                    <Title level={5} style={{ margin: 0 }}>Información del Pago</Title>
+                    <Divider style={{ marginTop: 8 }} />
+
+                    <Text><strong>Cliente:</strong> {cliente}</Text><br />
+                    <Text><strong>Total:</strong> ${total.toLocaleString()}</Text><br />
+                    <Text><strong>Método de pago:</strong> Efectivo</Text>
+                </div>
 
                 <Form form={form} layout="vertical" initialValues={{ monto: total }}>
                     <Form.Item
@@ -49,10 +57,10 @@ const ModalPago = ({ visible, onClose, ordenId, cliente, total, onRegistrarPago 
                         <Input type="number" prefix="$" />
                     </Form.Item>
                 </Form>
-                
+
             </Space>
         </Modal>
-  );
+    );
 };
 
 export default ModalPago;

@@ -1,7 +1,7 @@
 import { InputNumber } from "antd";
 import Boton from "componentes/atomos/Boton";
 import Imagen from "componentes/atomos/ImagenProducto";
-import type { Producto } from "modelo/productoModel";
+import type { Producto } from "services/productos";
 
 type Props = {
     producto: Producto & { cantidad: number };
@@ -40,8 +40,8 @@ const OrdenItem = ({ producto, onCantidadChange, onEliminar }: Props) => {
         <div style={filaStyle}>
             <div style={infoStyle}>
                     <Imagen
-                        src={producto.imagen}
-                        alt={producto.nombre}
+                        src={producto.nombre_producto ? producto.nombre_producto : "/placeholder.png"}
+                        alt={producto.nombre_producto}
                         width={50}
                         height={50}
                         style={{
@@ -51,20 +51,20 @@ const OrdenItem = ({ producto, onCantidadChange, onEliminar }: Props) => {
                         }}
                     />
                 
-                <span>{producto.nombre}</span>
+                <span>{producto.nombre_producto}</span>
             </div>
 
             <InputNumber
                 min={1}
                 value={producto.cantidad}
-                onChange={(v) => onCantidadChange(producto.id, v ?? 1)}
+                onChange={(v) => onCantidadChange(producto.id_producto, v ?? 1)}
             />
 
             <span style={precioStyle}>
                 ${(producto.precio * producto.cantidad).toFixed(2)}
             </span>
 
-            <Boton onClick={() => onEliminar(producto.id)} color="#ff4d4f">
+            <Boton onClick={() => onEliminar(producto.id_producto)} color="#ff4d4f">
                 Eliminar
             </Boton>
         </div>

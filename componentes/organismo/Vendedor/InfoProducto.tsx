@@ -10,25 +10,29 @@ interface InfoProductoProps {
 const contenedorStyle: React.CSSProperties = {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: '24px',
-    padding: '24px 0',
+    gap: '40px',
+    padding: '24px',
     maxWidth: '1200px',
     margin: '0 auto',
+    justifyContent: 'center',
+    alignItems: 'flex-start'
 };
 
 const contenedorImagenStyle: React.CSSProperties = {
-    flex: '1 1 55%',
-    maxHeight: '450px',
-    borderRadius: '12px',
-    overflow: 'hidden',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    flex: '1 1 400px',
+    height: '500px',
+    background: '#ffffff',
+    borderRadius: '16px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+    padding: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
 };
 
 const contenedorInfoStyle: React.CSSProperties = {
-    flex: '1 1 40%', // 40% del ancho
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start'
+    flex: '1 1 350px',
+    maxWidth: '500px'
 };
 
 const InfoProducto = ({ producto }: InfoProductoProps) => {
@@ -41,7 +45,10 @@ const InfoProducto = ({ producto }: InfoProductoProps) => {
     return (
         <div style={contenedorStyle}>
             <div style={contenedorImagenStyle}>
-                <ImagenProducto src={`/assets/img/productos/${nombreImagen}.jpg`} alt={producto.nombre_producto}/>
+                <ImagenProducto src={`/assets/img/productos/${nombreImagen}.jpg`} alt={producto.nombre_producto}
+                    height="100%" width="100%" 
+
+                />
             </div>
             <div style={contenedorInfoStyle}>
                 <CardInfoProducto producto={producto} />
