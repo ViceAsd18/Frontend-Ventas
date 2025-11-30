@@ -1,5 +1,5 @@
 import { Card, Row, Col, Button } from "antd";
-import type { Producto } from "modelo/productoModel";
+import type { Producto } from "services/productos";
 import Imagen from "componentes/atomos/ImagenProducto";
 import BadgeStock from "componentes/atomos/BadgeStock";
 import BadgeCategoria from "componentes/atomos/BadgeCategoria";
@@ -48,6 +48,12 @@ const precioStyle : React.CSSProperties = {
 }
 
 const CardProducto = ({ producto, onVerDetalle }: Props) => {
+
+    const nombreImg = producto.nombre_producto
+        .toLowerCase()          
+        .replace(/\s+/g, "_");  
+
+
     return (
         <Card
             hoverable
@@ -56,8 +62,8 @@ const CardProducto = ({ producto, onVerDetalle }: Props) => {
         >
             <div style={contenedorImagenStyle}>
                 <Imagen
-                    src={producto.imagen}
-                    alt={producto.nombre}
+                    src={"/assets/img/productos/" + nombreImg + ".jpg"}
+                    alt={producto.nombre_producto}
                     height="100%"
                     style={imagenStyle}
                 />
@@ -67,7 +73,7 @@ const CardProducto = ({ producto, onVerDetalle }: Props) => {
                 <Row gutter={[8, 8]}>
                     <Col span={12}>
                         <div style={nombreStyle}>
-                            {producto.nombre}
+                            {producto.nombre_producto}
                         </div>
                     </Col>
 
@@ -76,7 +82,7 @@ const CardProducto = ({ producto, onVerDetalle }: Props) => {
                     </Col>
 
                     <Col span={12}>
-                        <BadgeCategoria categoria={producto.categoria}></BadgeCategoria>
+                        <BadgeCategoria categoria={producto.categoria.nombre_categoria}></BadgeCategoria>
                     </Col>
 
                     <Col span={12} style={precioStyle}>

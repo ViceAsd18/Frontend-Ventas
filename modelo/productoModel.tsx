@@ -1,4 +1,3 @@
-// src/modelo/productoModel.ts
 export interface Producto {
     id: number;
     nombre: string;

@@ -1,4 +1,5 @@
 import { Input, Select, Button, Space } from "antd";
+import SelectOpciones from "componentes/atomos/SelectOpciones";
 import type { Dispatch, SetStateAction } from "react";
 
 interface Props {

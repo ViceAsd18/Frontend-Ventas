@@ -1,5 +1,5 @@
 import React from "react";
-import type { Producto } from "modelo/productoModel";
+import type { Producto } from "services/productos";
 import ImagenProducto from "componentes/atomos/ImagenProducto";
 import CardInfoProducto from "componentes/moleculas/Vendedor/CardInfoProducto";
 
@@ -32,10 +32,16 @@ const contenedorInfoStyle: React.CSSProperties = {
 };
 
 const InfoProducto = ({ producto }: InfoProductoProps) => {
+
+    const nombreImagen = producto.nombre_producto
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/[^a-z0-9_]/g, "");
+
     return (
         <div style={contenedorStyle}>
             <div style={contenedorImagenStyle}>
-                <ImagenProducto src={producto.imagen} alt={producto.nombre}/>
+                <ImagenProducto src={`/assets/img/productos/${nombreImagen}.jpg`} alt={producto.nombre_producto}/>
             </div>
             <div style={contenedorInfoStyle}>
                 <CardInfoProducto producto={producto} />

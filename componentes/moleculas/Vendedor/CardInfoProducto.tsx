@@ -1,11 +1,11 @@
 import React from "react";
-import { Card, Typography, Space, Divider, Tag } from "antd";
-import type { Producto } from "modelo/productoModel";
+import { Card, Typography, Space } from "antd";
+import type { Producto } from "services/productos";
 import BadgeStock from "componentes/atomos/BadgeStock";
 import BadgeCategoria from "componentes/atomos/BadgeCategoria";
 import Titulo from "componentes/atomos/Titulo";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 interface CardInfoProductoProps {
     producto: Producto;
@@ -48,10 +48,10 @@ const CardInfoProducto: React.FC<CardInfoProductoProps> = ({ producto }) => {
                 <div style={contenedorStyle}>
                     <div style={{ flex: 1 }}>
                         <Titulo nivel={2} style={{margin : '0 0 10px 0', fontSize : 24}}>
-                            {producto.nombre}
+                            {producto.nombre_producto}
                         </Titulo>
                         <div style={{ marginTop : 10}}>
-                            <BadgeCategoria categoria={producto.categoria}/>
+                            <BadgeCategoria categoria={producto.categoria.nombre_categoria}/>
                         </div>
                     </div>
 
@@ -68,7 +68,7 @@ const CardInfoProducto: React.FC<CardInfoProductoProps> = ({ producto }) => {
 
                 <div>
                     <Text style={{ fontSize: '16px', lineHeight: '1.6', color: '#666' }}>
-                        {producto.descripcion}
+                        {producto.descripcion_producto}
                     </Text>
                 </div>
 

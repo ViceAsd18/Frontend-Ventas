@@ -1,40 +1,69 @@
 import VendedorLayout from "componentes/layout/VendedorLayout"
-import { Card, Space, Typography } from "antd"
-import { useState } from "react"
-import type { Producto } from "modelo/productoModel"
-import { productosMock } from "modelo/productoModel"
+import { useEffect, useState } from "react"
+import type { Producto } from "services/productos"
 import { useNavigate } from "react-router"
 import CatalogoProductos from "componentes/organismo/Vendedor/CatalogoProductos"
 import Titulo from "componentes/atomos/Titulo"
 import ControlsTabla from "componentes/moleculas/Vendedor/ControlsTabla"
+import { getCategorias, type Categoria } from "services/categoria"
+import { getProductos } from "services/productos"
+import { Card, Space } from "antd"
+
 
 
 const ProductosPage = () => {
-    const [productos] = useState<Producto[]>(productosMock);
+    const [productos, setProductos] = useState<Producto[]>([]);
     const [busqueda, setBusqueda] = useState("");
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<string>();
 
     const navigate = useNavigate();
 
+    const [opcionesCategoria, setOpcionesCategoria] = useState<Categoria[]>([]);
+    useEffect(() => {
+    const fetchCategorias = async () => {
+        try {
+        const categorias = await getCategorias();
+        setOpcionesCategoria(categorias);
+        } catch (err) {
+        console.error("Error al cargar categorías", err);
+        }
+    };
+    fetchCategorias();
+    }, []);
+
+
+    useEffect(() => {
+    const fetchProductos = async () => {
+        try {
+        const data = await getProductos();
+        setProductos(data);
+        } catch (err) {
+        console.error("Error al cargar productos", err);
+        }
+    };
+
+    fetchProductos();
+    }, []);
+
+
 
     const handleVerDetalle = (producto: Producto) => {
-        navigate(`/detalle-producto/${producto.id}`);
+        navigate(`/detalle-producto/${producto.id_producto}`);
 
     };
 
     const productosFiltrados = productos.filter(producto => {
-        const coincideBusqueda = producto.nombre
+        const coincideBusqueda = producto.nombre_producto
             .toLowerCase()
             .includes(busqueda.toLowerCase());
 
         const coincideCategoria =
-            !categoriaSeleccionada || producto.categoria === categoriaSeleccionada;
+            !categoriaSeleccionada || producto.categoria.nombre_categoria === categoriaSeleccionada;
 
         return coincideBusqueda && coincideCategoria;
     });
 
 
-    const opcionesCategoria = ["Electrónica", "Wearables"];
 
 
     return (
@@ -48,7 +77,7 @@ const ProductosPage = () => {
                         onBusquedaChange={setBusqueda}
                         filtro={categoriaSeleccionada}
                         onFiltroChange={setCategoriaSeleccionada}
-                        opcionesFiltro={opcionesCategoria}
+                        opcionesFiltro={opcionesCategoria.map(c => c.nombre_categoria)}
                         placeholderBusqueda="Buscar producto..."
                         textoBoton="Agregar Producto"
                         onBotonClick={() => navigate("/agregar-producto")}

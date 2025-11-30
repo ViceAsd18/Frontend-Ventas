@@ -1,5 +1,5 @@
 import CardProducto from "componentes/moleculas/Vendedor/CardProductos";
-import type { Producto } from "modelo/productoModel";
+import type { Producto } from "services/productos";
 
 const CatalogoProductos = ({productos, onVerDetalle,}: {productos: Producto[]; onVerDetalle: (p: Producto) => void;}) => {
     return (
@@ -13,7 +13,7 @@ const CatalogoProductos = ({productos, onVerDetalle,}: {productos: Producto[]; o
         >
             {productos.map((prod) => (
                 <CardProducto
-                    key={prod.id}
+                    key={prod.id_producto}
                     producto={prod}
                     onVerDetalle={onVerDetalle}
                 />
