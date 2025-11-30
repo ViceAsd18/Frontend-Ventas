@@ -52,7 +52,7 @@ const CardInfoProducto: React.FC<CardInfoProductoProps> = ({ producto }) => {
                             {producto.nombre}
                         </Titulo>
                         <div style={{ marginTop : 10}}>
-                            <CategoriaProducto categoria={producto.categoria}/>
+                            <CategoriaProducto categoria={(producto.categoria as any).nombre_categoria}/>
                         </div>
                     </div>
 

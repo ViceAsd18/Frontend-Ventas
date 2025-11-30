@@ -76,7 +76,7 @@ const CardProducto = ({ producto, onVerDetalle }: Props) => {
                     </Col>
 
                     <Col span={12}>
-                        <CategoriaProducto categoria={producto.categoria}></CategoriaProducto>
+                        <CategoriaProducto categoria={(producto.categoria as any).nombre_categoria} />
                     </Col>
 
                     <Col span={12} style={precioStyle}>

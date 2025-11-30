@@ -1,13 +1,19 @@
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
-    //Ruta inicial
+    // Ruta inicial (localhost:5173)
     index("routes/cliente/home_cliente.tsx"),
+
+    // Rutas Cliente
+    route("cliente/home_cliente", "routes/cliente/home_cliente.tsx", { id: "cliente-home" }),
+    route("cliente/producto/:id", "routes/cliente/detalle_producto.tsx"),
+    route("cliente/mis-ordenes", "routes/cliente/mis_ordenes.tsx"),
+    route("cliente/orden/:id", "routes/cliente/detalle_orden_cliente.tsx"),
+
 
     //Ruta Publica
     route('login', 'routes/login.tsx'),
     route('registro','routes/registro.tsx'),
-
 
     //Rutas Vendedor
     route('dashboard','routes/vendedor/dashboard.tsx'),
@@ -17,8 +23,5 @@ export default [
     route('detalle-producto/:id', 'routes/vendedor/detalle-productoV.tsx'),
     route('crear-orden', 'routes/vendedor/crear-orden.tsx'),
     route('orden/:id', 'routes/vendedor/detalle-orden.tsx'),
-
-    
-
 
 ] satisfies RouteConfig;
