@@ -13,12 +13,13 @@ const LoginPage = () => {
         try {
             const hide = message.loading("Verificando credenciales...", 0);
 
-            //Hacemos login
+            //login
             const loginData: AuthResponse = await loginRequest(email, password);
 
-            console.log("Token a enviar:", loginData.access_token);
-            //Pasar token para obtener profile
-            const user: User = await getProfile(loginData.access_token);
+            localStorage.setItem("token", loginData.access_token);
+
+            // Ahora interceptor lo usará automáticamente
+            const user: User = await getProfile();
 
             // Guardamos usuario y token en contexto
             login({ token: loginData.access_token, user });
