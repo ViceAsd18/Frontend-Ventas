@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { Spin, Button, message, Result } from "antd";
+import { Spin, Button, Result, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import ClienteLayout from "../../layout/ClienteLayout";
-
 import { getProductoById } from "../../../services/productos";
 import type { Producto } from "../../../services/productos";
-import InfoProducto from "componentes/organismo/Vendedor/InfoProducto";
+import InfoProductoCliente from "../../organismo/Cliente/InfoProductoCliente";
 
 const DetalleProductoClientePage = () => {
-    const { id } = useParams(); // Obtenemos el ID de la URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [producto, setProducto] = useState<Producto | null>(null);
     const [loading, setLoading] = useState(true);
@@ -30,6 +29,7 @@ const DetalleProductoClientePage = () => {
                 setProducto(null);
             }
         } catch (error) {
+            console.error(error);
             message.error("Error al cargar el producto");
         } finally {
             setLoading(false);
@@ -39,6 +39,7 @@ const DetalleProductoClientePage = () => {
     return (
         <ClienteLayout>
             <div style={{ padding: "20px 0", maxWidth: "1200px", margin: "0 auto" }}>
+
                 <Button
                     type="text"
                     icon={<ArrowLeftOutlined />}
@@ -58,16 +59,17 @@ const DetalleProductoClientePage = () => {
                     <Result
                         status="404"
                         title="Producto no encontrado"
-                        subTitle="Lo sentimos, el producto que buscas no existe o fue eliminado."
-                        extra={<Button type="primary" onClick={() => navigate("/cliente/home_cliente")}>Ir al Inicio</Button>}
+                        subTitle="Lo sentimos, el producto que buscas no existe."
+                        extra={
+                            <Button type="primary" onClick={() => navigate("/cliente/home_cliente")}>
+                                Ir al Inicio
+                            </Button>
+                        }
                     />
                 )}
 
                 {!loading && producto && (
-                    <div style={{ background: '#fff', padding: '20px', borderRadius: '12px' }}>
-                        <InfoProducto producto={producto} />
-
-                    </div>
+                    <InfoProductoCliente producto={producto} />
                 )}
             </div>
         </ClienteLayout>

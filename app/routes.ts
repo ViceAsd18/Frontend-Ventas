@@ -7,6 +7,7 @@ export default [
     route("cliente/producto/:id", "routes/cliente/detalle_producto.tsx"),
     route("cliente/mis-ordenes", "routes/cliente/mis_ordenes.tsx"),
     route("cliente/orden/:id", "routes/cliente/detalle_orden_cliente.tsx"),
+    route("cliente/tienda", "routes/cliente/tienda.tsx"),
 
 
     //Ruta Publica

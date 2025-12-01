@@ -2,9 +2,9 @@ import ClienteLayout from "componentes/layout/ClienteLayout";
 import { Typography, Button, Spin, message } from "antd";
 import { useState, useEffect } from "react";
 import type { Producto } from "../../../services/productos";
-import CardProducto from "componentes/moleculas/Vendedor/CardProductos";
 import { useNavigate } from "react-router";
 import { getProductos } from "../../../services/productos";
+import CardProductoCliente from "../../moleculas/Cliente/CardProductoCliente";
 
 const { Title, Paragraph } = Typography;
 
@@ -92,10 +92,9 @@ const HomeClientePage = () => {
                         width: "100%",
                     }}>
                         {productos.map((prod) => (
-                            <CardProducto
+                            <CardProductoCliente
                                 key={prod.id_producto}
                                 producto={prod}
-                                onVerDetalle={(p) => navigate(`/cliente/producto/${p.id_producto}`)}
                             />
                         ))}
                     </div>

@@ -9,7 +9,6 @@ const ClienteLayout = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
     const [current, setCurrent] = useState('inicio');
 
-    // Estilos basados en tu mockup (Clean White)
     const headerStyle: React.CSSProperties = {
         position: 'sticky',
         top: 0,
@@ -36,8 +35,8 @@ const ClienteLayout = ({ children }: { children: React.ReactNode }) => {
 
     const itemsMenu = [
         { key: 'inicio', label: 'Inicio', onClick: () => navigate('/cliente/home_cliente') },
-        { key: 'tienda', label: 'Tienda', onClick: () => navigate('/cliente/home_cliente') }, // Por ahora lleva al home
-        { key: 'ordenes', label: 'Mis Órdenes', onClick: () => navigate('/cliente/mis-ordenes') }, // Ruta futura
+        { key: 'tienda', label: 'Tienda', onClick: () => navigate('/cliente/tienda') },
+        { key: 'ordenes', label: 'Mis Órdenes', onClick: () => navigate('/cliente/mis-ordenes') },
     ];
 
     return (
