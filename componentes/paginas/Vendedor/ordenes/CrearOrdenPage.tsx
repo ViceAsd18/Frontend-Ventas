@@ -50,46 +50,51 @@ const CrearOrdenPage = () => {
     }, []);
 
     const handleGenerarOrden = async (clienteId: number, productos: any[]) => {
-        
         const fecha = new Date().toISOString();
 
+        // Calcula los detalles
         const detalles = productos.map(p => ({
             productoId: p.id_producto,
             cantidad: p.cantidad,
             subtotal: p.cantidad * p.precio
         }));
 
-        const total = detalles.reduce((sum, d) => sum + d.subtotal, 0);
+        // Calcula subtotal y total con 19% IVA
+        const subtotal = detalles.reduce((sum, d) => sum + d.subtotal, 0);
+        const total = Math.round(subtotal * 1.19);
 
         const nuevaOrden = {
             usuarioId: clienteId,
             fecha_venta: fecha,
-            total: total,
+            total,
             estado: "pendiente",
             metodo_pago: "efectivo",
-            detalles: detalles
+            detalles
         };
-        
+
         try {
             const resp = await crearOrden(nuevaOrden);
             message.success("Orden creada exitosamente");
             navigate("/ordenes");
-            
         } catch (error) {
             message.error("Error al crear la orden");
         }
     };
 
 
+
     const handlePagarOrden = async (clienteId: number, productos: any[]) => {
         const fecha = new Date().toISOString();
+        
         const detalles = productos.map(p => ({
             productoId: p.id_producto,
             cantidad: p.cantidad,
             subtotal: p.cantidad * p.precio,
         }));
 
-        const total = detalles.reduce((sum, d) => sum + d.subtotal, 0);
+        // Aplica el 19% de IVA
+        const subtotal = detalles.reduce((sum, d) => sum + d.subtotal, 0);
+        const total = Math.round(subtotal * 1.19);
 
         const nuevaOrden = {
             usuarioId: clienteId,
@@ -114,6 +119,7 @@ const CrearOrdenPage = () => {
             message.error("Error al crear la orden");
         }
     };
+
 
 
 
