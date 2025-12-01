@@ -49,7 +49,7 @@ const precioStyle : React.CSSProperties = {
 
 const CardProducto = ({ producto, onVerDetalle }: Props) => {
 
-    const nombreImg = producto.nombre_producto
+    const nombreImg = (producto.nombre_producto ?? "Producto")
         .toLowerCase()          
         .replace(/\s+/g, "_");  
 

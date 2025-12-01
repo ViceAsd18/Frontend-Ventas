@@ -31,7 +31,7 @@ const contenedorBtn : React.CSSProperties = {
 
 const ProductoFila = ({ producto, onAgregar }: Props) => {
 
-    const nombreImg = producto.nombre_producto
+    const nombreImg = (producto.nombre_producto ?? "")
         .toLowerCase()          
         .replace(/\s+/g, "_");  
 

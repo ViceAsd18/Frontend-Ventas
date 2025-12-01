@@ -40,7 +40,7 @@ const OrdenItem = ({ producto, onCantidadChange, onEliminar }: Props) => {
         nombre.toLowerCase()
             .replace(/ /g, "_")
 
-    const nombreImagen = normalizarNombre(producto.nombre_producto);
+    const nombreImagen = normalizarNombre(producto.nombre_producto ?? "producto");
 
 
     return (
@@ -64,14 +64,14 @@ const OrdenItem = ({ producto, onCantidadChange, onEliminar }: Props) => {
             <InputNumber
                 min={1}
                 value={producto.cantidad}
-                onChange={(v) => onCantidadChange(producto.id_producto, v ?? 1)}
+                onChange={(v) => onCantidadChange(producto.id_producto ?? 0, v ?? 1)}
             />
 
             <span style={precioStyle}>
                 ${(producto.precio * producto.cantidad).toFixed(2)}
             </span>
 
-            <Boton onClick={() => onEliminar(producto.id_producto)} color="#ff4d4f">
+            <Boton onClick={() => onEliminar(producto.id_producto ?? 0)} color="#ff4d4f">
                 Eliminar
             </Boton>
         </div>

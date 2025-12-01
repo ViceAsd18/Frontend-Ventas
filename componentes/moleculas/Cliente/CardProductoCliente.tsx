@@ -43,7 +43,7 @@ const CardProductoCliente = ({ producto }: Props) => {
     const navigate = useNavigate();
 
 
-    const nombreRuta = producto.nombre_producto.toLowerCase().replace(/\s+/g, "_")
+    const nombreRuta = producto.nombre_producto?.toLowerCase().replace(/\s+/g, "_")
     const rutaImagen = '/assets/img/productos/' + nombreRuta + ".jpg";
 
     const nombreCategoria = (producto.categoria as any).nombre_categoria || "General";
