@@ -1,5 +1,4 @@
-import { Input, Select, Button, Space } from "antd";
-import SelectOpciones from "componentes/atomos/SelectOpciones";
+import { Input, Select, Button, Row, Col } from "antd";
 import type { Dispatch, SetStateAction } from "react";
 
 interface Props {
@@ -14,45 +13,52 @@ interface Props {
 }
 
 const ControlsTabla = ({
-    busqueda, onBusquedaChange,
-    filtro, onFiltroChange,
+    busqueda,
+    onBusquedaChange,
+    filtro,
+    onFiltroChange,
     opcionesFiltro = [],
     placeholderBusqueda = "Buscar...",
     textoBoton = "Agregar",
     onBotonClick,
 }: Props) => {
     return (
-        <Space style={{ marginBottom: 16 }}>
-            <Input
+        <Row gutter={[16, 16]} justify="start">
+            <Col xs={24} sm={12} md={8} lg={6}>
+                <Input
                 placeholder={placeholderBusqueda}
                 value={busqueda}
                 onChange={(e) => onBusquedaChange(e.target.value)}
-                style={{ width: 200 }}
-            />
+                />
+            </Col>
 
             {opcionesFiltro.length > 0 && (
+            <Col xs={24} sm={12} md={6} lg={4}>
                 <Select
-                placeholder="Filtrar..."
-                value={filtro}
-                onChange={onFiltroChange}
-                style={{ width: 150 }}
-                allowClear
+                    placeholder="Filtrar..."
+                    value={filtro}
+                    onChange={onFiltroChange}
+                    allowClear
+                    style={{ width: "100%" }}
                 >
-                <Select.Option value="">Todos</Select.Option>
-                {opcionesFiltro.map((opt) => (
+                    <Select.Option value="">Todos</Select.Option>
+                    {opcionesFiltro.map((opt) => (
                     <Select.Option key={opt} value={opt}>
-                    {opt}
+                        {opt}
                     </Select.Option>
-                ))}
+                    ))}
                 </Select>
+            </Col>
             )}
 
             {onBotonClick && (
-                <Button type="primary" onClick={onBotonClick}>
-                {textoBoton}
+            <Col xs={24} sm={24} md={6} lg={4}>
+                <Button type="primary" onClick={onBotonClick} style={{ width: "100%" }}>
+                    {textoBoton}
                 </Button>
-            )}
-        </Space>
+            </Col>
+        )}
+        </Row>
     );
 };
 

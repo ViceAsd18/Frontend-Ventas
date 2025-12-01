@@ -28,9 +28,10 @@ type Props = {
     productosDisponibles: Producto[];
     clientes: { id_usuario: number; nombre: string }[];
     onGenerarOrden: (clienteId: number, productos: (Producto & { cantidad: number })[]) => void;
+    onPagarOrden: (clienteId: number, productos: any[]) => void;
 };
 
-const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) => {
+const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden, onPagarOrden }: Props) => {
 
     /* 
     productosEnCarrito → productos seleccionados para la orden
@@ -155,21 +156,21 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden }: Props) =
                             Generar Orden
                         </Boton>
 
-                        <Boton onClick={() => setModalPagoVisible(true)} color="#20c997">
+                        <Boton
+                            onClick={() => {
+                                if (!cliente) return message.error("Seleccione un cliente");
+                                if (productosEnCarrito.length === 0) return message.error("Agregue productos a la orden");
+                                onPagarOrden(cliente, productosEnCarrito);
+                            }}
+                            color="#20c997"
+                        >
                             Pagar Orden
                         </Boton>
+
+
                     </Row>
                 </Col>
             </Row>
-
-            <ModalPago
-                visible={modalPagoVisible}
-                onClose={() => setModalPagoVisible(false)}
-                total={totalOrden}
-                cliente={clientes.find(c => c.id_usuario === cliente)?.nombre ?? ""}
-                ordenId={1234}
-                onRegistrarPago={(monto) => console.log("Pago:", monto)}
-            />
         </>
     );
 };

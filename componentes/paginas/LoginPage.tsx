@@ -10,21 +10,23 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (email: string, password: string) => {
+        const hide = message.loading("Verificando credenciales...", 0); // mostramos loading
+
         try {
-            const hide = message.loading("Verificando credenciales...", 0);
-
-            //login
+            // login
             const loginData: AuthResponse = await loginRequest(email, password);
-
             localStorage.setItem("token", loginData.access_token);
 
-            // Ahora interceptor lo usará automáticamente
+            // obtener perfil
             const user: User = await getProfile();
 
-            // Guardamos usuario y token en contexto
+            // guardar en contexto
             login({ token: loginData.access_token, user });
 
-            hide();
+            hide(); // ocultamos loading
+            message.success("Inicio de sesión exitoso"); // mostramos mensaje OK
+
+            // redireccionar según rol
             if (user.rol.toLowerCase() === "cliente") {
                 navigate("/");
             } else {
@@ -32,9 +34,18 @@ const LoginPage = () => {
             }
 
         } catch (error: any) {
+            hide(); // ocultamos loading si falla
             console.error("Error al iniciar sesión:", error);
+
+            if (error.response?.status === 401) {
+                message.error("Correo o contraseña incorrecta");
+            } else {
+                message.error("Ocurrió un error al iniciar sesión");
+            }
         }
     };
+
+
 
 
     return <LoginForm onSubmit={handleLogin} />;

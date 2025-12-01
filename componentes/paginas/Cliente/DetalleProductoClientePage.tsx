@@ -5,7 +5,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import ClienteLayout from "../../layout/ClienteLayout";
 import { getProductoById } from "../../../services/productos";
 import type { Producto } from "../../../services/productos";
-import InfoProductoCliente from "../../organismo/Cliente/InfoProductoCliente";
+import InfoProductoCliente from "componentes/organismo/Cliente/InfoProductoCliente";
 
 const DetalleProductoClientePage = () => {
     const { id } = useParams();
@@ -39,7 +39,7 @@ const DetalleProductoClientePage = () => {
     return (
         <ClienteLayout>
             <div style={{ padding: "20px 0", maxWidth: "1200px", margin: "0 auto" }}>
-
+         
                 <Button
                     type="text"
                     icon={<ArrowLeftOutlined />}
@@ -60,7 +60,7 @@ const DetalleProductoClientePage = () => {
                         status="404"
                         title="Producto no encontrado"
                         subTitle="Lo sentimos, el producto que buscas no existe."
-                        extra={
+                         extra={
                             <Button type="primary" onClick={() => navigate("/cliente/home_cliente")}>
                                 Ir al Inicio
                             </Button>

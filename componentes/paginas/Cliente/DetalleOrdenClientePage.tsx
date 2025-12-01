@@ -4,6 +4,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import ClienteLayout from "../../layout/ClienteLayout";
 import ImagenProducto from "../../atomos/ImagenProducto";
 
+
 const { Title, Text } = Typography;
 
 const ordenMock = {
@@ -37,8 +38,9 @@ const DetalleOrdenClientePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    // Columnas para la tabla de productos
     const columns = [
-        {
+         {
             title: "Producto",
             dataIndex: "nombre",
             key: "nombre",
@@ -71,6 +73,7 @@ const DetalleOrdenClientePage = () => {
         { title: "Cantidad", dataIndex: "cantidad", key: "cantidad", align: "center" as const },
         { title: "Precio Unitario", dataIndex: "precio", key: "precio", render: (val: number) => `$${val.toLocaleString("es-CL")}` },
         { title: "Subtotal", dataIndex: "subtotal", key: "subtotal", align: "right" as const, render: (val: number) => <b>${val.toLocaleString("es-CL")}</b> },
+
     ];
 
     return (
@@ -128,13 +131,14 @@ const DetalleOrdenClientePage = () => {
                     />
 
                     <div style={{ textAlign: "right", marginTop: 20 }}>
-                        <Title level={3} style={{ color: '#1890ff' }}>
+                         <Title level={3} style={{ color: '#1890ff' }}>
                             Total: ${ordenMock.total.toLocaleString("es-CL")}
                         </Title>
-                    </div>
-                </Card>
+                    </div>  
+            </Card>
             </div>
         </ClienteLayout>
+
     );
 };
 

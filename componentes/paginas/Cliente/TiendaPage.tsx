@@ -35,7 +35,7 @@ const TiendaPage = () => {
 
     const productosFiltrados = productos.filter(producto => {
         const nombreCat = (producto.categoria as any).nombre_categoria || "General";
-        const coincideBusqueda = producto.nombre.toLowerCase().includes(busqueda.toLowerCase());
+        const coincideBusqueda = producto.nombre_producto.toLowerCase().includes(busqueda.toLowerCase());
         const coincideCategoria = categoriaSeleccionada === "Todos" || nombreCat === categoriaSeleccionada;
         return coincideBusqueda && coincideCategoria;
     });
@@ -88,7 +88,7 @@ const TiendaPage = () => {
                     }}>
                         {productosFiltrados.map((prod) => (
                             <CardProductoCliente
-                                key={prod.id}
+                                key={prod.id_producto}
                                 producto={prod}
                             />
                         ))}

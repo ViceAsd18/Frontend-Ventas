@@ -85,14 +85,13 @@ const VendedorLayout = ({ children }: { children: React.ReactNode }) => {
     };
 
     const contenidoStyle: React.CSSProperties = {
-        padding: 24,
+        padding: '1%',
         margin: 0,
         minHeight: "calc(100vh - 128px)",
         background: "#fafafa",
     };
 
     const contenedorPrincipalStyle: React.CSSProperties = {
-        background: "#fff",
         borderRadius: 8,
         padding: 24,
         boxShadow: "0 2px 8px rgba(0,0,0,0.1)",

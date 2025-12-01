@@ -1,5 +1,5 @@
 import { Modal, Input, Form, Space, Typography, Divider, message } from "antd";
-
+import { useNavigate } from "react-router";
 
 const { Text, Title } = Typography;
 
@@ -15,6 +15,8 @@ interface Props {
 const ModalPago = ({ visible, onClose, ordenId, cliente, total, onRegistrarPago }: Props) => {
     const [form] = Form.useForm();
 
+    const navigate = useNavigate();
+
     const handleOk = () => {
         form.validateFields().then(values => {
             const montoRecibido = Number(values.monto);
@@ -25,6 +27,9 @@ const ModalPago = ({ visible, onClose, ordenId, cliente, total, onRegistrarPago 
             }
 
             onRegistrarPago(montoRecibido);
+            onClose();
+            message.success("Pago registrado correctamente");
+            navigate("/ordenes");
         });
     };
 

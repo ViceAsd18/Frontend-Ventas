@@ -59,10 +59,6 @@ const OrdenesPage = () => {
                 metodo_pago: "efectivo",
             });
 
-            message.success(
-                `Pago de $${monto.toLocaleString()} registrado. Orden #${ordenSeleccionada.id_venta} completada.`
-            );
-
             // Actualizar la orden en la lista local sin recargar nada
             setOrdenes(prev =>
                 prev.map(o =>

@@ -20,7 +20,10 @@ const contenedorStyle: React.CSSProperties = {
 
 const contenedorImagenStyle: React.CSSProperties = {
     flex: '1 1 400px',
-    height: '500px',
+    width: '100%',
+    minWidth : '210px',
+    maxWidth: '500px',
+    height: 'auto',
     background: '#ffffff',
     borderRadius: '16px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
@@ -40,13 +43,14 @@ const InfoProducto = ({ producto }: InfoProductoProps) => {
     const nombreImagen = producto.nombre_producto
         .toLowerCase()
         .replace(/\s+/g, "_")
-        .replace(/[^a-z0-9_]/g, "");
-
+    
     return (
         <div style={contenedorStyle}>
             <div style={contenedorImagenStyle}>
                 <ImagenProducto src={`/assets/img/productos/${nombreImagen}.jpg`} alt={producto.nombre_producto}
-                    height="100%" width="100%" 
+                    height="100%" width="100%" style={{
+                        objectFit : 'contain'
+                    }}
 
                 />
             </div>

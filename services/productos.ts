@@ -46,23 +46,13 @@ export const getProductos = async (): Promise<Producto[]> => {
     }
 };
 
-export const getProductoById = async (id: number): Promise<Producto | null> => {
-    try {
-        const response = await api.get(`/productos/${id}`);
-        const item = response.data;
+export const getProductoById = async (id: number): Promise<Producto> => {
+    const response = await api.get(`/productos/${id}`);
+    return response.data;
+}
 
-        return {
-            ...item,
-            id: item.id_producto,
-            nombre: item.nombre_producto,
-            descripcion: item.descripcion_producto,
-            precio: item.precio,
-            stock: item.stock,
-            imagen: item.imagen,
-            categoria: item.categoria
-        };
-    } catch (error) {
-        console.error(`Error al obtener producto ${id}:`, error);
-        return null;
-    }
+export const crearProducto = async (productoData: Partial<Producto>) => {
+    const response = await api.post("/productos", productoData);
+    return response.data;
 };
+

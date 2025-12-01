@@ -88,7 +88,7 @@ const HomeClientePage = () => {
                     }}>
                         {productosDestacados.map((prod) => (
                             <CardProductoCliente
-                                key={prod.id}
+                                key={prod.id_producto}
                                 producto={prod}
                             />
                         ))}

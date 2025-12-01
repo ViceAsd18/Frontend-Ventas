@@ -6,7 +6,7 @@ const CatalogoProductos = ({productos, onVerDetalle,}: {productos: Producto[]; o
         <div
             style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(clamp(150px, 90%, 250px), 1fr))",
                 gap: "16px",
                 width: "100%",
             }}
