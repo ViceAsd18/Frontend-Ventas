@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { Spin, Button, message, Result } from "antd";
+import { Spin, Button, Result, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import ClienteLayout from "../../layout/ClienteLayout";
 import { getProductoById } from "../../../services/productos";
