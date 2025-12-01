@@ -102,7 +102,7 @@ const TablaOrdenes = ({
                 columns={columnas}
                 dataSource={ordenesFiltradas}
                 rowKey="id"
-                pagination={{ pageSize: 5 }}
+                pagination={{ pageSize: 10, showSizeChanger : false }}
                 style={{ overflow: "auto" }}
             />
         </div>

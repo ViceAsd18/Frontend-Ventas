@@ -73,7 +73,7 @@ const UsuarioSidebar = ({ colapsado }: { colapsado?: boolean }) => {
                     {!colapsado && (
                         <div style={{ textAlign: 'center' }}>
                             <div style={nombreUsuarioStyle}>
-                                {user?.nombre || 'Nombre Usuario'}
+                                {user?.email}
                             </div>
                             <div style={rolUsuarioStyle}>
                                 {user?.rol}

@@ -1,3 +1,4 @@
+import { PrivateRoute } from "auth/PrivateRoute";
 import DetalleOrdenClientePage from "componentes/paginas/Cliente/DetalleOrdenClientePage";
 
 export function meta() {
@@ -5,5 +6,9 @@ export function meta() {
 }
 
 export default function DetalleOrdenClienteRoute() {
-    return <DetalleOrdenClientePage />;
+    return (
+        <PrivateRoute rol="cliente">
+            <DetalleOrdenClientePage />;
+        </PrivateRoute>
+    )
 }

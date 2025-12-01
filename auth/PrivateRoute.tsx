@@ -1,5 +1,6 @@
-// PrivateRoute.tsx
+import { useEffect, useRef } from "react";
 import { Navigate } from "react-router";
+import { message } from "antd";
 import { useAuth } from "./AuthContext";
 import type { ReactNode } from "react";
 
@@ -10,20 +11,29 @@ interface Props {
 
 export const PrivateRoute = ({ children, rol }: Props) => {
     const { user, loading } = useAuth();
+    const shownRef = useRef(false);
 
-    // Mientras carga el user, mostramos nada o un loader
+    useEffect(() => {
+        if (!loading && !user && !shownRef.current) {
+            message.info("Necesitas iniciar sesión para acceder a esta página");
+            shownRef.current = true;
+        }
+        if (!loading && user && rol && user.rol.toLowerCase() !== rol.toLowerCase() && !shownRef.current) {
+            message.error("No tienes permisos para acceder a esta página");
+            shownRef.current = true;
+        }
+    }, [loading, user, rol]);
+
     if (loading) {
         return <div style={{ textAlign: 'center', padding: 50 }}>Cargando...</div>;
     }
 
-    // Si no hay usuario → redirigir
     if (!user) {
         return <Navigate to="/" replace />;
     }
 
-    // Validar rol
     if (rol && user.rol.toLowerCase() !== rol.toLowerCase()) {
-        return <Navigate to="/no-autorizado" replace />;
+        return <Navigate to="/" replace />;
     }
 
     return <>{children}</>;

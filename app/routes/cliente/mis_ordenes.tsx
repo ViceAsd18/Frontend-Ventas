@@ -1,3 +1,4 @@
+import { PrivateRoute } from "auth/PrivateRoute";
 import MisOrdenesPage from "componentes/paginas/Cliente/MisOrdenesPage";
 
 export function meta() {
@@ -5,5 +6,7 @@ export function meta() {
 }
 
 export default function MisOrdenesRoute() {
-    return <MisOrdenesPage />;
+    return <PrivateRoute rol="cliente">
+        <MisOrdenesPage />;
+    </PrivateRoute>
 }
