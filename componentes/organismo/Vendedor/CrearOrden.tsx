@@ -6,22 +6,25 @@ import Boton from "componentes/atomos/Boton";
 import SelectOpciones from "componentes/atomos/SelectOpciones";
 import type { Producto } from "services/productos";
 import Titulo from "componentes/atomos/Titulo";
-import ModalPago from "componentes/moleculas/Vendedor/ModalPago";
 
 const estiloListaProductos: React.CSSProperties = {
-    background: "#f9f9f9",
-    border: "1px solid #e0e0e0",
-    padding: 12,
-    borderRadius: 6,
-    maxHeight: 600,
-    overflowY: "auto",
+  background: "#f9f9f9",
+  border: "1px solid #e0e0e0",
+  padding: 12,
+  borderRadius: 6,
+  maxHeight: 600,
+  overflowY: "auto",
+  width: "100%",
 };
 
 const estiloPanelOrden: React.CSSProperties = {
-    background: "#f9f9f9",
-    border: "1px solid #e0e0e0",
-    padding: 12,
-    borderRadius: 6,
+  background: "#f9f9f9",
+  border: "1px solid #e0e0e0",
+  padding: 12,
+  borderRadius: 6,
+  maxHeight: 600,
+  overflowY: "auto",
+  width: "100%",
 };
 
 type Props = {
@@ -41,7 +44,6 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden, onPagarOrd
     */
     const [productosEnCarrito, setProductosEnCarrito] = useState<(Producto & { cantidad: number })[]>([]);
     const [cliente, setCliente] = useState<number>();
-    const [modalPagoVisible, setModalPagoVisible] = useState(false);
     const [search, setSearch] = useState("");
 
     //Agregar producto al carrito
@@ -91,8 +93,8 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden, onPagarOrd
 
     return (
         <>
-            <Row gutter={16}>
-                <Col span={16} style={estiloListaProductos}>
+            <Row gutter={[16, 16]}>
+                <Col xs={24} sm={24} md={16} style={estiloListaProductos}>
                     <Input.Search
                         placeholder="Buscar producto..."
                         value={search}
@@ -109,7 +111,7 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden, onPagarOrd
                     ))}
                 </Col>
 
-                <Col span={8} style={estiloPanelOrden}>
+                <Col xs={24} sm={24} md={8} style={estiloPanelOrden}>
                     <Titulo nivel={3}>Detalle de la Orden</Titulo>
                     
                     <SelectOpciones
@@ -145,7 +147,7 @@ const CrearOrden = ({ productosDisponibles, clientes, onGenerarOrden, onPagarOrd
                         <p><b>Total: ${totalOrden.toFixed(2)}</b></p>
                     </div>
 
-                    <Row gutter={8} justify="end" style={{ marginTop: 10 }}>
+                    <Row gutter={8} justify="end" style={{ marginTop: 10 , gap: 8 }}>
                         
                         <Boton color="red"
                             onClick={() => {

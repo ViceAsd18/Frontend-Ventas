@@ -8,7 +8,8 @@ import type { Orden } from "services/orden";
 import Titulo from "componentes/atomos/Titulo";
 import TablaOrdenes from "componentes/organismo/Vendedor/TablaOrdenes";
 import ModalPago from "componentes/moleculas/Vendedor/ModalPago";
-import { actualizarOrden, getOrdenes } from "services/orden";
+import { actualizarOrden, getOrdenById, getOrdenes, registrarPagoOrden } from "services/orden";
+import { actualizarStockProducto } from "services/productos";
 
 const OrdenesPage = () => {
 
@@ -50,36 +51,35 @@ const OrdenesPage = () => {
         setModalVisible(true);
     };
 
-    const handleRegistrarPago = async (monto: number) => {
+
+
+    const handleRegistrarPago = async () => {
         if (!ordenSeleccionada) return;
 
         try {
-            await actualizarOrden(ordenSeleccionada.id_venta, {
-                estado: "completada",
-                metodo_pago: "efectivo",
-            });
+            //Registrar el pago y actualizar stock en backend
+            await registrarPagoOrden(ordenSeleccionada);
 
-            // Actualizar la orden en la lista local sin recargar nada
+            //Actualizar UI localmente con stock real
+            const ordenActualizada = await getOrdenById(ordenSeleccionada.id_venta);
+
             setOrdenes(prev =>
                 prev.map(o =>
                     o.id_venta === ordenSeleccionada.id_venta
-                        ? {
-                            ...o,
-                            estado: "completada",
-                            metodo_pago: "efectivo",
-                        }
+                        ? ordenActualizada
                         : o
                 )
             );
 
             setModalVisible(false);
             setOrdenSeleccionada(null);
-
         } catch (error) {
             console.error(error);
             message.error("No se pudo registrar el pago");
         }
     };
+
+
 
 
     const handleCancelarOrden = async (orden: Orden) => {

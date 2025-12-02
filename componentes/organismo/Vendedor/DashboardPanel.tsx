@@ -5,6 +5,8 @@ import type { Orden } from "services/orden";
 import { getOrdenes } from "services/orden";
 import StatCard from "componentes/moleculas/Vendedor/Dashboard/StatCard";
 import VentasGrafico from "componentes/moleculas/Vendedor/Dashboard/VentasChart";
+import PrecioProducto from "componentes/atomos/PrecioProducto";
+import BadgeEstado from "componentes/atomos/BadgeEstado";
 
 const DashboardPanel = () => {
     const [ordenes, setOrdenes] = useState<Orden[]>([]);
@@ -68,24 +70,13 @@ const DashboardPanel = () => {
         dataIndex: "total",
         key: "total",
         align: "right",
-        render: (total: number) => `$${total.toFixed(2)}`,
+        render: (total: number) => <PrecioProducto valor={total}/>,
         },
         {
         title: "Estado",
         dataIndex: "estado",
         key: "estado",
-        render: (estado: Orden["estado"]) => {
-            const colorMap = {
-            pendiente: "orange",
-            completada: "green",
-            cancelada: "red",
-            };
-            return (
-            <span style={{ color: colorMap[estado], fontWeight: "bold" }}>
-                {estado.toUpperCase()}
-            </span>
-            );
-        },
+        render: (estado: Orden["estado"]) => <BadgeEstado estado={estado} />,
         },
     ];
 

@@ -1,7 +1,8 @@
 import { Modal, Input, Form, Space, Typography, Divider, message } from "antd";
+import Titulo from "componentes/atomos/Titulo";
 import { useNavigate } from "react-router";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 interface Props {
     visible: boolean;
@@ -45,8 +46,7 @@ const ModalPago = ({ visible, onClose, ordenId, cliente, total, onRegistrarPago 
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
 
                 <div>
-                    <Title level={5} style={{ margin: 0 }}>Información del Pago</Title>
-                    <Divider style={{ marginTop: 8 }} />
+                    <Titulo nivel={5}>Información del Pago</Titulo>
 
                     <Text><strong>Cliente:</strong> {cliente}</Text><br />
                     <Text><strong>Total:</strong> ${total.toLocaleString()}</Text><br />

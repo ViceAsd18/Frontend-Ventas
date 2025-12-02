@@ -48,7 +48,7 @@ const DetalleOrdenClientePage = () => {
         return (
             <ClienteLayout>
                 <div style={{ padding: 50, textAlign: "center" }}>
-                    <h3>Orden no encontrada</h3>
+                    <Titulo nivel={3}>La orden que buscas no existe.</Titulo>
                     <Button onClick={() => navigate("/cliente/mis-ordenes")}>
                         Volver
                     </Button>

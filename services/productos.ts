@@ -2,27 +2,18 @@ import { api } from "../auth/api";
 
 // Interfaz Híbrida
 export interface Producto {
-    // --- Vista Cliente ---
-    id: number;
-    nombre: string;
-    descripcion: string;
+    id_producto: number;
+    nombre_producto: string;
+    descripcion_producto: string;
     precio: number;
     stock: number;
-    imagen: string;
     categoria: {
         id_categoria: number;
         nombre_categoria: string;
+        descripcion_categoria: string;
     };
-
-    // --- Vista Vendedor / Legacy ---
-    id_producto?: number;
-    nombre_producto?: string;
-    descripcion_producto?: string;
-    sku?: string;
-    marca?: string;
-    proveedor?: string;
-    fechaCreacion?: string;
 }
+
 
 // Servicio Híbrido
 export const getProductos = async (): Promise<Producto[]> => {
@@ -56,3 +47,9 @@ export const crearProducto = async (productoData: Partial<Producto>) => {
     return response.data;
 };
 
+export const actualizarStockProducto = async (id_producto: number, nuevoStock: number) => {
+    const response = await api.patch(`/productos/${id_producto}`, {
+        stock: nuevoStock
+    });
+    return response.data;
+};

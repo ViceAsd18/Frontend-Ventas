@@ -3,6 +3,7 @@ import type { Producto } from "services/productos";
 import Imagen from "componentes/atomos/ImagenProducto";
 import BadgeStock from "componentes/atomos/BadgeStock";
 import BadgeCategoria from "componentes/atomos/BadgeCategoria";
+import PrecioProducto from "componentes/atomos/PrecioProducto";
 
 interface Props {
     producto: Producto;
@@ -86,7 +87,7 @@ const CardProducto = ({ producto, onVerDetalle }: Props) => {
                     </Col>
 
                     <Col span={12} style={precioStyle}>
-                        ${producto.precio.toLocaleString("es-CL", {minimumFractionDigits: 2,})}
+                        <PrecioProducto valor={producto.precio}></PrecioProducto>
                     </Col>
                 </Row>
             </div>

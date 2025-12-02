@@ -2,12 +2,15 @@ import { Layout, Menu, Button, Badge } from "antd";
 import { ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { useAuth } from "auth/AuthContext";
 
 const { Header, Content, Footer } = Layout;
 
 const ClienteLayout = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
     const [current, setCurrent] = useState('inicio');
+
+    const { user, logout } = useAuth();
 
     const headerStyle: React.CSSProperties = {
         position: 'sticky',
@@ -58,7 +61,17 @@ const ClienteLayout = ({ children }: { children: React.ReactNode }) => {
                 />
 
                 {/* Acciones Derecha (Carrito y Perfil) */}
-                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                {user ? (
+                    <Button
+                        type="primary"
+                        shape="round"
+                        icon={<UserOutlined />}
+                        onClick={logout}
+                    >
+                        Cerrar Sesión
+                    </Button>
+                ) : (
                     <Button
                         type="primary"
                         shape="round"
@@ -67,7 +80,8 @@ const ClienteLayout = ({ children }: { children: React.ReactNode }) => {
                     >
                         Login
                     </Button>
-                </div>
+                )}
+            </div>
             </Header>
 
             <Content style={{ padding: '0 24px', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>

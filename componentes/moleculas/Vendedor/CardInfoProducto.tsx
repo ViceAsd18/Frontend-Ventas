@@ -4,6 +4,8 @@ import type { Producto } from "services/productos";
 import BadgeStock from "componentes/atomos/BadgeStock";
 import BadgeCategoria from "componentes/atomos/BadgeCategoria";
 import Titulo from "componentes/atomos/Titulo";
+import PrecioProducto from "componentes/atomos/PrecioProducto";
+import Texto from "componentes/atomos/Texto";
 
 const { Text } = Typography;
 
@@ -26,18 +28,6 @@ const contenedorStyle : React.CSSProperties = {
     gap: '16px' 
 }
 
-const precioStyle : React.CSSProperties = {
-    fontWeight: 400, 
-    fontSize: '1.8rem',
-    display: 'block',
-    marginBottom: '16px'
-}
-
-const detalleAdicionales : React.CSSProperties = {
-    display : 'flex',
-    justifyContent : 'space-between'
-}
-
 const CardInfoProducto: React.FC<CardInfoProductoProps> = ({ producto }) => {
     return (
         <Card
@@ -47,7 +37,7 @@ const CardInfoProducto: React.FC<CardInfoProductoProps> = ({ producto }) => {
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
                 <div style={contenedorStyle}>
                     <div style={{ flex: 1 }}>
-                        <Titulo nivel={2} style={{margin : '0 0 10px 0', fontSize : 24}}>
+                        <Titulo nivel={2} style={{margin : '0 0 20px 0', fontSize : 24}}>
                             {producto.nombre_producto}
                         </Titulo>
                         <div style={{ marginTop : 10}}>
@@ -60,35 +50,14 @@ const CardInfoProducto: React.FC<CardInfoProductoProps> = ({ producto }) => {
                     </div>
                 </div>
 
-                <div>
-                    <Text style={precioStyle}>
-                        ${producto.precio.toLocaleString("es-CL", { minimumFractionDigits: 2 })}
-                    </Text>
+                <div>   
+                    <PrecioProducto valor={producto.precio} tipo="destacado"/>
                 </div>
 
                 <div>
-                    <Text style={{ fontSize: '16px', lineHeight: '1.6', color: '#666' }}>
+                    <Texto style={{fontSize : 16, lineHeight: '1.6', color: '#666'}}>
                         {producto.descripcion_producto}
-                    </Text>
-                </div>
-
-
-                <div>
-                    <Titulo nivel={3}>Detalles Adicionales</Titulo>
-                    <Space direction="vertical" style={{ width: '100%' }} size="small">
-                        <div style={detalleAdicionales}>
-                            <Text type="secondary">SKU:</Text>
-                            <Text strong>{producto.sku || 'N/A'}</Text>
-                        </div>
-                        <div style={detalleAdicionales}>
-                            <Text type="secondary">Marca:</Text>
-                            <Text strong>{producto.marca}</Text>
-                        </div>
-                        <div style={detalleAdicionales}>
-                            <Text type="secondary">Proveedor:</Text>
-                            <Text strong>{producto.proveedor}</Text>
-                        </div>
-                    </Space>
+                    </Texto>
                 </div>
             </Space>
         </Card>

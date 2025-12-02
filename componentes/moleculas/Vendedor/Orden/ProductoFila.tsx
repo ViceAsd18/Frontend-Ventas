@@ -1,79 +1,80 @@
-import React, { useState } from "react";
-import { Row, Col, Space, InputNumber, Tag, Typography } from "antd";
+import React from "react";
+import { Row, Col, Space } from "antd";
 import Boton from "componentes/atomos/Boton";
 import type { Producto } from "services/productos";
 import BadgeStock from "componentes/atomos/BadgeStock";
 import BadgeCategoria from "componentes/atomos/BadgeCategoria";
 import Imagen from "componentes/atomos/ImagenProducto";
+import PrecioProducto from "componentes/atomos/PrecioProducto";
 
 type Props = {
     producto: Producto;
     onAgregar: (producto: Producto, cantidad: number) => void;
 };
 
-const rowStyle = {
-    marginBottom: 10,
-    background: "#fff",
-    borderRadius: 8,
-    border: "1px solid #f0f0f0",
-    padding: 12,
-}
-
-const contenedorBtn : React.CSSProperties = {
-    display : 'flex',
-    justifyContent: "flex-end",
-    alignItems: "center",
-    gap: 12,
-    marginTop: 10,
-}
-
-
-
 const ProductoFila = ({ producto, onAgregar }: Props) => {
-
     const nombreImg = (producto.nombre_producto ?? "")
-        .toLowerCase()          
-        .replace(/\s+/g, "_");  
+        .toLowerCase()
+        .replace(/\s+/g, "_");
 
     return (
-        <Row align="middle" justify="space-between" style={rowStyle}>
-            <Col flex="1 1 auto">
+        <Row
+            align="middle"
+            justify="space-between"
+            style={{
+                marginBottom: 10,
+                background: "#fff",
+                borderRadius: 8,
+                border: "1px solid #f0f0f0",
+                padding: 12,
+                flexWrap: "wrap", // importante para que en móviles baje si hace falta
+            }}
+        >
+            {/* Imagen + nombre + badges */}
+            <Col xs={24} sm={16} md={16}>
                 <Space align="start">
                     <Imagen
-                        src={"/assets/img/productos/" + nombreImg + ".jpg"}
+                        src={`/assets/img/productos/${nombreImg}.jpg`}
                         alt={producto.nombre_producto}
                         style={{
                             width: 60,
                             height: 60,
                             borderRadius: 6,
-                            objectFit: "cover"
+                            objectFit: "cover",
                         }}
                     />
                     <div>
                         <div style={{ fontWeight: 600, fontSize: 14 }}>
                             {producto.nombre_producto}
                         </div>
-
-                        <div style={{ marginTop: 6 , gap: 6, display: "flex", alignItems: "center"  }}>
-                            <BadgeCategoria categoria={producto.categoria.nombre_categoria}/>
-                            <BadgeStock stock={producto.stock}></BadgeStock>
+                        <div
+                            style={{
+                                marginTop: 6,
+                                display: "flex",
+                                gap: 6,
+                                flexWrap: "wrap",
+                            }}
+                        >
+                            <BadgeCategoria categoria={producto.categoria.nombre_categoria} />
+                            <BadgeStock stock={producto.stock} />
                         </div>
                     </div>
                 </Space>
             </Col>
 
-            <Col style={{ minWidth: 220 }}>
-                <div style={{ textAlign: "right" }}>
-                    <div style={{ fontWeight: 700, fontSize: 16 }}>
-                        ${producto.precio.toFixed(2)}
-                    </div>
-
-                    <div style={contenedorBtn}>
-                        <Boton onClick={() => onAgregar(producto, 1)} color="#2690ed" >
-                            Agregar
-                        </Boton>
-                    </div>
-                </div>
+            <Col xs={24} sm={8} md={8}
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 10,
+                    flexWrap: "wrap",
+                }}
+            >
+                <PrecioProducto valor={producto.precio} />
+                <Boton onClick={() => onAgregar(producto, 1)} color="#2690ed">
+                    Agregar
+                </Boton>
             </Col>
         </Row>
     );

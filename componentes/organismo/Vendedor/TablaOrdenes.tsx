@@ -2,6 +2,10 @@ import { Table, Button, Space, Tag } from "antd";
 import type { Dispatch, SetStateAction } from "react";
 import type { Orden } from "services/orden";
 import ControlsTabla from "componentes/moleculas/Vendedor/ControlsTabla";
+import PrecioProducto from "componentes/atomos/PrecioProducto";
+import BadgeEstado from "componentes/atomos/BadgeEstado";
+import Boton from "componentes/atomos/Boton";
+import type { Color } from "antd/es/color-picker";
 
 interface Props {
     ordenes: Orden[];
@@ -40,7 +44,7 @@ const TablaOrdenes = ({
             dataIndex: "total",
             key: "total",
             width: "15%",
-            render: (monto?: number) => `$${(monto ?? 0).toLocaleString()}`,
+            render: (total: number) => <PrecioProducto valor={total} tipo="normal" />,
 
         },
         {
@@ -49,7 +53,7 @@ const TablaOrdenes = ({
             key: "estado",
             width: "10%",
             render: (estado: string) => (
-                <Tag color={estadosColor[estado]}>{estado}</Tag>
+                <BadgeEstado estado={estado as 'pendiente' | 'completada' | 'cancelada'} />
             ),
         },
         {
@@ -64,13 +68,9 @@ const TablaOrdenes = ({
 
                     {orden.estado === "pendiente" && (
                         <>
-                            <Button type="primary" onClick={() => onPagarOrden(orden)}>
-                                Pagar
-                            </Button>
+                            <Boton onClick={() => onPagarOrden(orden)} color="green">Pagar</Boton>
 
-                            <Button danger onClick={() => onCancelarOrden(orden)}>
-                                Cancelar
-                            </Button>
+                            <Boton onClick={() => onCancelarOrden(orden)} color="red">Cancelar</Boton>
                         </>
                     )}
                 </Space>

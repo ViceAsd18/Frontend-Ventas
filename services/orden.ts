@@ -1,5 +1,7 @@
 import { api } from "auth/api";
 import type { Venta } from "componentes/organismo/Vendedor/HistorialVentas";
+import { actualizarStockProducto, getProductoById, getProductos } from "./productos";
+import type { Producto} from 'services/productos'
 
 export interface Orden {
     id_venta: number;
@@ -73,7 +75,7 @@ export const getUltimasVentasByProducto = async (productoId: number, limite = 3)
             if (detalle.producto.id_producto === productoId) {
                 ventas.push({
                     key: `${orden.id_venta}-${detalle.id_detalle}`,
-                    idOrden: `ORD-${orden.id_venta}`,
+                    idOrden: `${orden.id_venta}`,
                     fecha: new Date(orden.fecha_venta).toLocaleDateString(),
                     cantidad: detalle.cantidad,
                     precioTotal: `$${detalle.subtotal.toFixed(2)}`
@@ -99,3 +101,18 @@ export const getVentasCliente = async (userId: number) => {
 
 
 
+export const registrarPagoOrden = async (orden: Orden) => {
+    await actualizarOrden(orden.id_venta, { estado: "completada", metodo_pago: "efectivo" });
+
+    await Promise.all(
+        orden.detalles.map(async detalle => {
+            const id_producto = detalle.producto.id_producto;
+            if (!id_producto) return;
+
+            const productoActual = await getProductoById(id_producto);
+
+            const nuevoStock = Math.max((productoActual.stock ?? 0) - detalle.cantidad, 0);
+            await actualizarStockProducto(id_producto, nuevoStock);
+        })
+    );
+};
