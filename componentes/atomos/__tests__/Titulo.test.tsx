@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 // Mock antd Typography Title to a heading element we can inspect
 vi.mock('antd', () => {

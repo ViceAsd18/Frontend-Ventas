@@ -15,6 +15,29 @@ vi.mock('../../../layout/ClienteLayout', () => ({
   default: ({ children }: any) => <div>{children}</div>,
 }));
 
+// Mock antd components used in DetalleProductoClientePage
+vi.mock('antd', () => {
+  const React = require('react');
+  const Spin = ({ children }: any) => <div data-testid="spin">{children}</div>;
+  const Button = ({ children, onClick, ...props }: any) => <button onClick={onClick} {...props}>{children}</button>;
+  const Result = ({ title, subTitle, extra }: any) => (
+    <div>
+      <h1>{title}</h1>
+      <div>{subTitle}</div>
+      <div>{extra}</div>
+    </div>
+  );
+  const message = { error: vi.fn() };
+
+  return {
+    __esModule: true,
+    Spin,
+    Button,
+    Result,
+    message,
+  };
+});
+
 // Mock InfoProductoCliente to display producto.nombre_producto
 vi.mock('componentes/organismo/Cliente/InfoProductoCliente', () => ({
   __esModule: true,

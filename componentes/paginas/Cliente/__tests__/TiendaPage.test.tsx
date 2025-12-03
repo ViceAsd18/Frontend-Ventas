@@ -22,6 +22,34 @@ vi.mock('../../../../services/productos', () => ({
   getProductos: vi.fn(),
 }));
 
+// Mock antd components used by TiendaPage
+vi.mock('antd', () => {
+  const React = require('react');
+  const Title = ({ children, ...props }: any) => <h1 {...props}>{children}</h1>;
+  const Text = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+  const Input = (props: any) => <input {...props} />;
+  const Button = ({ children, onClick, ...props }: any) => <button onClick={onClick} {...props}>{children}</button>;
+  const Spin = ({ children }: any) => <div data-testid="spin">{children}</div>;
+  const Empty = ({ description }: any) => <div>{description}</div>;
+  const Space = ({ children }: any) => <div>{children}</div>;
+
+  return {
+    __esModule: true,
+    Typography: { Title, Text },
+    Input,
+    Button,
+    Spin,
+    Empty,
+    Space,
+  };
+});
+
+// Mock ant-design icons used
+vi.mock('@ant-design/icons', () => ({
+  __esModule: true,
+  SearchOutlined: () => <span />,
+}));
+
 import TiendaPage from '../TiendaPage';
 import { getProductos } from '../../../../services/productos';
 

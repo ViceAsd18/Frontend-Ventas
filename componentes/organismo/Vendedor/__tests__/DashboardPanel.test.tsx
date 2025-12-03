@@ -36,7 +36,8 @@ vi.mock('antd', () => {
   const Card = ({ children, title }: any) => <div data-testid="card"><h4>{title}</h4>{children}</div>;
   const Row = ({ children }: any) => <div>{children}</div>;
   const Col = ({ children }: any) => <div>{children}</div>;
-  return { __esModule: true, Table, Card, Row, Col };
+  const Typography = { Text: (props: any) => React.createElement('span', props, props.children) };
+  return { __esModule: true, Table, Card, Row, Col, Typography };
 });
 
 import DashboardPanel from '../DashboardPanel';

@@ -1,92 +1,71 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, test, vi } from 'vitest';
+import React from "react";
+import { vi, describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import type { Producto } from "../../../../services/productos";
 
-// Mocks for atomos used by the component
-vi.mock('../../../atomos/ImagenProducto', () => ({
-  __esModule: true,
-  default: ({ src, alt }: any) => <img data-testid="imagen-producto" src={src} alt={alt} />,
+// Mocks para los componentes atómicos que incluyen dependencias externas (antd)
+vi.mock("../../../atomos/Titulo", () => ({
+  default: (props: any) => React.createElement("h2", props, props.children),
+}));
+vi.mock("../../../atomos/ImagenProducto", () => ({
+  default: (props: any) => React.createElement("img", props),
+}));
+vi.mock("../../../atomos/BadgeCategoria", () => ({
+  default: (props: any) => React.createElement("span", null, props.categoria),
+}));
+vi.mock("../../../atomos/BadgeStock", () => ({
+  default: (props: any) => React.createElement("span", null, `${props.stock} en Stock`),
 }));
 
-vi.mock('../../../atomos/Titulo', () => ({
-  __esModule: true,
-  default: ({ children, nivel = 2, ...rest }: any) => React.createElement(`h${nivel}`, { 'data-testid': 'titulo', ...rest }, children),
-}));
+import InfoProductoCliente from "../InfoProductoCliente";
 
-vi.mock('../../../atomos/BadgeStock', () => ({
-  __esModule: true,
-  default: ({ stock }: any) => <span data-testid="badge-stock">{stock}</span>,
-}));
+const productoBase: Partial<Producto> = {
+  nombre_producto: "Producto Demo",
+  categoria: { id_categoria: 1, nombre_categoria: "Electronica", descripcion_categoria: "" },
+  stock: 12,
+  precio: 10000,
+  descripcion_producto: "Descripción de prueba",
+};
 
-vi.mock('../../../atomos/BadgeCategoria', () => ({
-  __esModule: true,
-  default: ({ categoria }: any) => <span data-testid="badge-categoria">{categoria}</span>,
-}));
+describe("InfoProductoCliente", () => {
+  it("renderiza título, categoría, stock, precio, descripción e imagen", () => {
+    render(<InfoProductoCliente producto={productoBase as Producto} />);
 
-import InfoProductoCliente from '../InfoProductoCliente';
+    // Título
+    expect(screen.getByText("Producto Demo")).toBeInTheDocument();
 
-describe('InfoProductoCliente', () => {
-  test('renderiza imagen, título, badges, precio y detalles', () => {
-    const producto: any = {
-      nombre_producto: 'Producto Test',
-      categoria: { nombre_categoria: 'Cat1' },
-      stock: 5,
-      precio: 12000,
-      descripcion_producto: 'Una descripción',
-      sku: 'SKU123',
-      marca: 'MarcaX',
-      proveedor: 'ProvY',
-    };
+    // Categoría (Tag)
+    expect(screen.getByText("Electronica")).toBeInTheDocument();
 
-    render(<InfoProductoCliente producto={producto} />);
+    // Stock: según la lógica de BadgeStock, 12 -> "12 en Stock"
+    expect(screen.getByText("12 en Stock")).toBeInTheDocument();
 
-    // Imagen: ruta compuesta a partir del nombre en minúsculas y con guiones bajos
-    expect(screen.getByTestId('imagen-producto')).toHaveAttribute('src', '/assets/img/productos/producto_test.jpg');
-
-    // Título (hay múltiples `data-testid="titulo"`, tomar el primero como encabezado principal)
-    const titulos = screen.getAllByTestId('titulo');
-    expect(titulos[0]).toHaveTextContent('Producto Test');
-
-    // Badges
-    expect(screen.getByTestId('badge-categoria')).toHaveTextContent('Cat1');
-    expect(screen.getByTestId('badge-stock')).toHaveTextContent('5');
-
-    // Precio formateado según locale usado en el componente
-    const formatted = `$${producto.precio.toLocaleString('es-CL', { minimumFractionDigits: 0 })}`;
-    expect(screen.getByText(formatted)).toBeInTheDocument();
+    // Precio formateado (prefijo $)
+    const expectedPrice = "$" + (10000).toLocaleString("es-CL", { minimumFractionDigits: 0 });
+    expect(screen.getByText(expectedPrice)).toBeInTheDocument();
 
     // Descripción
-    expect(screen.getByText('Una descripción')).toBeInTheDocument();
+    expect(screen.getByText("Descripción de prueba")).toBeInTheDocument();
 
-    // Detalles adicionales (valores concretos)
-    expect(screen.getByText('SKU123')).toBeInTheDocument();
-    expect(screen.getByText('MarcaX')).toBeInTheDocument();
-    expect(screen.getByText('ProvY')).toBeInTheDocument();
+    // Imagen: debe existir una imagen con alt = nombre del producto
+    const img = screen.getByAltText("Producto Demo") as HTMLImageElement;
+    expect(img).toBeTruthy();
+    expect(img.getAttribute("src")).toContain("/assets/img/productos/producto_demo.jpg");
   });
 
-  test('muestra textos por defecto cuando faltan algunos campos', () => {
-    const producto: any = {
-      nombre_producto: 'Otro Producto',
-      categoria: {},
-      stock: 0,
-      precio: 0,
-      descripcion_producto: '',
-      sku: undefined,
-      marca: undefined,
-      proveedor: undefined,
-    };
-
+  it("muestra 'Sin descripción.' cuando no hay descripción", () => {
+    const producto = { ...productoBase, descripcion_producto: "" } as Producto;
     render(<InfoProductoCliente producto={producto} />);
+    expect(screen.getByText("Sin descripción.")).toBeInTheDocument();
+  });
 
-    // Si no hay nombre de categoría, se usa 'General'
-    expect(screen.getByTestId('badge-categoria')).toHaveTextContent('General');
-
-    // Descripción por defecto
-    expect(screen.getByText('Sin descripción.')).toBeInTheDocument();
-
-    // Valores por defecto en detalles
-    expect(screen.getByText('N/A')).toBeInTheDocument();
-    expect(screen.getByText('Genérico')).toBeInTheDocument();
-    expect(screen.getByText('Local')).toBeInTheDocument();
+  it("usa 'General' cuando no existe categoría", () => {
+    // Si la propiedad `nombre_categoria` está vacía, el componente debe mostrar "General"
+    const producto = {
+      ...productoBase,
+      categoria: { id_categoria: 0, nombre_categoria: "", descripcion_categoria: "" },
+    } as Producto;
+    render(<InfoProductoCliente producto={producto} />);
+    expect(screen.getByText("General")).toBeInTheDocument();
   });
 });

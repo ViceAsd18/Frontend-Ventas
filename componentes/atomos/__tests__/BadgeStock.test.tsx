@@ -14,17 +14,17 @@ vi.mock('antd', () => {
 import BadgeStock from '../BadgeStock';
 
 describe('BadgeStock', () => {
-  it('muestra "Sin Stock" y color rojo cuando stock es 0', () => {
+  it('muestra "Sin Stock" y color gris cuando stock es 0', () => {
     render(<BadgeStock stock={0} />);
     const tag = screen.getByTestId('ant-tag');
     expect(tag).toHaveTextContent('Sin Stock');
-    expect(tag).toHaveAttribute('data-color', 'red');
+    expect(tag).toHaveAttribute('data-color', 'gray');
   });
 
-  it('muestra "Stock Bajo" y color rojo cuando stock < 10', () => {
+  it('muestra cantidad y color rojo cuando stock < 10', () => {
     render(<BadgeStock stock={5} />);
     const tag = screen.getByTestId('ant-tag');
-    expect(tag).toHaveTextContent('Stock Bajo');
+    expect(tag).toHaveTextContent('5 Bajo Stock');
     expect(tag).toHaveAttribute('data-color', 'red');
   });
 
@@ -35,11 +35,11 @@ describe('BadgeStock', () => {
     expect(tag).toHaveAttribute('data-color', 'red');
   });
 
-  it('muestra cantidad y color naranja cuando stock es >30 y <=50', () => {
+  it('muestra cantidad y color verde cuando stock es >30', () => {
     render(<BadgeStock stock={35} />);
     const tag = screen.getByTestId('ant-tag');
     expect(tag).toHaveTextContent('35 en Stock');
-    expect(tag).toHaveAttribute('data-color', 'orange');
+    expect(tag).toHaveAttribute('data-color', 'green');
   });
 
   it('muestra cantidad y color verde cuando stock > 50', () => {

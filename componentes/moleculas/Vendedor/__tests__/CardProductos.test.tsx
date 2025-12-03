@@ -1,13 +1,17 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import CardProducto from '../CardProductos';
 
 // Mock antd components used in CardProducto
 vi.mock('antd', () => {
   const React = require('react');
   return {
     __esModule: true,
-    Card: ({ children }: any) => React.createElement('div', { 'data-testid': 'ant-card' }, children),
+    Card: ({ children, onClick }: any) => React.createElement('div', { 'data-testid': 'ant-card', onClick }, children),
+    Typography: {
+      Text: ({ children, type, strong, style }: any) => React.createElement('span', { 'data-testid': 'ant-text', 'data-type': type ?? '', 'data-strong': strong ? 'true' : 'false', style }, children),
+    },
     Row: ({ children }: any) => React.createElement('div', { 'data-testid': 'ant-row' }, children),
     Col: ({ children }: any) => React.createElement('div', { 'data-testid': 'ant-col' }, children),
     Button: ({ children, onClick, disabled }: any) => React.createElement('button', { 'data-testid': 'ant-button', onClick, disabled }, children),
@@ -39,7 +43,6 @@ vi.mock('componentes/atomos/BadgeCategoria', () => {
   return { __esModule: true, default: BadgeCatMock };
 });
 
-import CardProducto from '../CardProductos';
 
 describe('CardProducto', () => {
   const producto = {
@@ -50,9 +53,10 @@ describe('CardProducto', () => {
     categoria: { nombre_categoria: 'DemoCat' },
   } as any;
 
-  it('renderiza imagen, nombre, badges y precio, y llama onVerDetalle al click cuando hay stock', () => {
+  it('renderiza imagen, nombre, badges y precio; card llama onVerDetalle y boton llama onEditarProducto', () => {
     const onVerDetalle = vi.fn();
-    render(<CardProducto producto={producto} onVerDetalle={onVerDetalle} />);
+    const onEditarProducto = vi.fn();
+    render(<CardProducto producto={producto} onVerDetalle={onVerDetalle} onEditarProducto={onEditarProducto} />);
 
     // Imagen usa nombre normalizado
     const img = screen.getByTestId('imagen-producto') as HTMLImageElement;
@@ -70,21 +74,28 @@ describe('CardProducto', () => {
     const precio = screen.getByText((content) => content.startsWith('$') && /29990|29\.990/.test(content));
     expect(precio).toBeTruthy();
 
-    // Botón está habilitado y llama handler
-    const boton = screen.getByTestId('ant-button');
-    expect(boton).toBeEnabled();
-    fireEvent.click(boton);
+    // Hacer click en la tarjeta debe llamar onVerDetalle
+    const card = screen.getByTestId('ant-card');
+    fireEvent.click(card);
     expect(onVerDetalle).toHaveBeenCalledWith(producto);
+
+    // Botón de editar llama onEditarProducto y no propaga a onVerDetalle
+    const boton = screen.getByTestId('ant-button');
+    expect(boton).toBeInTheDocument();
+    fireEvent.click(boton);
+    expect(onEditarProducto).toHaveBeenCalledWith(producto);
   });
 
-  it('deshabilita el botón cuando stock es 0', () => {
+  it('cuando stock es 0, boton sigue presente y al click llama onEditarProducto, no llama onVerDetalle', () => {
     const onVerDetalle = vi.fn();
+    const onEditarProducto = vi.fn();
     const sinStock = { ...producto, stock: 0 } as any;
-    render(<CardProducto producto={sinStock} onVerDetalle={onVerDetalle} />);
+    render(<CardProducto producto={sinStock} onVerDetalle={onVerDetalle} onEditarProducto={onEditarProducto} />);
 
     const boton = screen.getByTestId('ant-button');
-    expect(boton).toBeDisabled();
+    expect(boton).toBeInTheDocument();
     fireEvent.click(boton);
+    expect(onEditarProducto).toHaveBeenCalledWith(sinStock);
     expect(onVerDetalle).not.toHaveBeenCalled();
   });
 });

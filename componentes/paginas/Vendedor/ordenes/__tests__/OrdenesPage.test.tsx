@@ -10,7 +10,9 @@ vi.mock('react-router', () => ({ useNavigate: () => mockNavigate }));
 vi.mock('services/orden', () => {
   const getOrdenes = vi.fn();
   const actualizarOrden = vi.fn();
-  return { __esModule: true, getOrdenes, actualizarOrden };
+  const registrarPagoOrden = vi.fn();
+  const getOrdenById = vi.fn();
+  return { __esModule: true, getOrdenes, actualizarOrden, registrarPagoOrden, getOrdenById };
 });
 
 // Mock antd message
@@ -58,7 +60,7 @@ vi.mock('componentes/moleculas/Vendedor/ModalPago', () => ({
 }));
 
 import OrdenesPage from '../OrdenesPage';
-import { getOrdenes, actualizarOrden } from 'services/orden';
+import { getOrdenes, actualizarOrden, registrarPagoOrden, getOrdenById } from 'services/orden';
 import { message } from 'antd';
 
 describe('OrdenesPage', () => {
@@ -111,17 +113,17 @@ describe('OrdenesPage', () => {
 
     // click registrar pago
     const btnRegistrar = screen.getByText('Registrar Pago Mock');
+    // prepare getOrdenById to return updated order
+    const updated = { id_venta: 102, usuario: { nombre: 'U2' }, estado: 'completada', total: 200 };
+    (registrarPagoOrden as any).mockResolvedValue({});
+    (getOrdenById as any).mockResolvedValue(updated);
+
     fireEvent.click(btnRegistrar);
 
+    // esperar que registrarPagoOrden y getOrdenById hayan sido invocados y modal desaparezca
     await waitFor(() => {
-      expect(actualizarOrden).toHaveBeenCalledWith(102, {
-        estado: 'completada',
-        metodo_pago: 'efectivo',
-      });
-    });
-
-    // modal debe desaparecer al actualizar (ordenSeleccionada null)
-    await waitFor(() => {
+      expect(registrarPagoOrden).toHaveBeenCalled();
+      expect(getOrdenById).toHaveBeenCalledWith(102);
       expect(screen.queryByTestId('modal-pago')).toBeNull();
     });
   });

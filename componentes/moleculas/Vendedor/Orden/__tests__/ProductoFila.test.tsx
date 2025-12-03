@@ -5,7 +5,11 @@ import { describe, expect, it, vi } from 'vitest';
 // Mock antd layout components
 vi.mock('antd', () => {
   const React = require('react');
+  const Typography = { Text: (props: any) => React.createElement('span', props, props.children) };
+
   return {
+    __esModule: true,
+    Typography,
     Row: ({ children, style }: any) => React.createElement('div', { 'data-testid': 'ant-row', style }, children),
     Col: ({ children, style }: any) => React.createElement('div', { 'data-testid': 'ant-col', style }, children),
     Space: ({ children }: any) => React.createElement('div', { 'data-testid': 'ant-space' }, children),

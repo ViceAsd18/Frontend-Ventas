@@ -51,9 +51,6 @@ describe('CardInfoProducto', () => {
       stock: 12,
       precio: 49990,
       descripcion_producto: 'Descripción de prueba',
-      sku: 'SKU123',
-      marca: 'MarcaX',
-      proveedor: 'ProveedorY',
     } as any;
 
     render(<CardInfoProducto producto={producto} />);
@@ -74,30 +71,6 @@ describe('CardInfoProducto', () => {
     // Descripción
     expect(screen.getByText('Descripción de prueba')).toBeInTheDocument();
 
-    // Detalles adicionales
-    expect(screen.getByText('SKU:')).toBeInTheDocument();
-    expect(screen.getByText('SKU123')).toBeInTheDocument();
-    expect(screen.getByText('Marca:')).toBeInTheDocument();
-    expect(screen.getByText('MarcaX')).toBeInTheDocument();
-    expect(screen.getByText('Proveedor:')).toBeInTheDocument();
-    expect(screen.getByText('ProveedorY')).toBeInTheDocument();
   });
 
-  it('muestra N/A si no hay SKU', () => {
-    const producto = {
-      nombre_producto: 'Sin SKU',
-      categoria: { nombre_categoria: 'Var' },
-      stock: 0,
-      precio: 1000,
-      descripcion_producto: 'Sin sku desc',
-      sku: null,
-      marca: 'M',
-      proveedor: 'P',
-    } as any;
-
-    render(<CardInfoProducto producto={producto} />);
-
-    expect(screen.getByText('SKU:')).toBeInTheDocument();
-    expect(screen.getByText('N/A')).toBeInTheDocument();
-  });
 });

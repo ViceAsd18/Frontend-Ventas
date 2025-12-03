@@ -23,8 +23,11 @@ describe('CatalogoProductos', () => {
     ];
 
     const onVerDetalle = vi.fn();
+    const onEditarProducto = vi.fn();
 
-    render(<CatalogoProductos productos={productos as any} onVerDetalle={onVerDetalle} />);
+    render(
+      <CatalogoProductos productos={productos as any} onVerDetalle={onVerDetalle} onEditarProducto={onEditarProducto} />
+    );
 
     const cards = screen.getAllByTestId('card-producto');
     expect(cards).toHaveLength(2);

@@ -8,6 +8,24 @@ vi.mock('react-router', () => ({
   useNavigate: () => mockNavigate,
 }));
 
+// Mock antd to provide Typography.Title, Typography.Paragraph, Button, Spin and message
+vi.mock('antd', () => {
+  const React = require('react');
+  const Title = ({ children, ...props }: any) => <h1 {...props}>{children}</h1>;
+  const Paragraph = ({ children, ...props }: any) => <p {...props}>{children}</p>;
+  const Button = ({ children, onClick, ...props }: any) => <button onClick={onClick} {...props}>{children}</button>;
+  const Spin = ({ children }: any) => <div data-testid="spin">{children}</div>;
+  const message = { error: vi.fn() };
+
+  return {
+    __esModule: true,
+    Typography: { Title, Paragraph },
+    Button,
+    Spin,
+    message,
+  };
+});
+
 // Mock ClienteLayout
 vi.mock('../../../layout/ClienteLayout', () => ({
   __esModule: true,

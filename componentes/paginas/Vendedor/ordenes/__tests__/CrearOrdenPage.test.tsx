@@ -8,7 +8,15 @@ vi.mock('react-router', () => ({ useNavigate: () => mockNavigate }));
 
 // Mock services
 vi.mock('services/usuario', () => ({ __esModule: true, getClientes: vi.fn().mockResolvedValue([{ id_usuario: 1, nombre: 'Cliente 1' }]) }));
-vi.mock('services/productos', () => ({ __esModule: true, getProductos: vi.fn().mockResolvedValue([{ id_producto: 10, nombre_producto: 'Prod A', precio: 1000 }]) }));
+vi.mock('services/productos', () => ({
+  __esModule: true,
+  getProductos: vi.fn().mockResolvedValue([{ id_producto: 10, nombre_producto: 'Prod A', precio: 1000 }]),
+  getProductoById: vi.fn(async (id: number) => {
+    // simple lookup for tests
+    if (id === 10) return { id_producto: 10, nombre_producto: 'Prod A', precio: 1000 };
+    return null;
+  }),
+}));
 vi.mock('services/orden', () => {
   const crearOrden = vi.fn();
   return { __esModule: true, crearOrden };

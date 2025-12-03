@@ -8,14 +8,18 @@ vi.mock('componentes/layout/VendedorLayout', () => ({
   default: ({ children }: any) => <div data-testid="vendedor-layout">{children}</div>,
 }));
 
+// Mock react-router useNavigate
+const mockNavigate = vi.fn();
+vi.mock('react-router', () => ({ useNavigate: () => mockNavigate }));
+
 // Mock Titulo
 vi.mock('componentes/atomos/Titulo', () => ({
   __esModule: true,
   default: ({ children }: any) => <h1 data-testid="titulo">{children}</h1>,
 }));
 
-// Mock AgregarProductoForm
-vi.mock('componentes/organismo/Vendedor/AgregarProductoForm', () => ({
+// Mock FormularioProducto (ruta real usada por la página)
+vi.mock('componentes/organismo/Vendedor/FormularioProducto', () => ({
   __esModule: true,
   default: () => <form data-testid="agregar-form">Formulario Mock</form>,
 }));

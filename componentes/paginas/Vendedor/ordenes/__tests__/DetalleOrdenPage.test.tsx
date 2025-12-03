@@ -5,6 +5,9 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 // Mock react-router useParams
 vi.mock('react-router', () => ({ useParams: () => ({ id: '42' }) }));
 
+// Mock Titulo (componente atómico utilizado en la página)
+vi.mock('componentes/atomos/Titulo', () => ({ __esModule: true, default: ({ children }: any) => <h1>{children}</h1> }));
+
 // Mock services/orden and expose getOrdenes as a mock fn
 vi.mock('services/orden', () => {
   const getOrdenes = vi.fn();

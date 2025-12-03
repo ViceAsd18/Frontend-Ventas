@@ -80,27 +80,6 @@ const InfoProductoCliente = ({ producto }: Props) => {
                                 {producto.descripcion_producto  || "Sin descripción."}
                             </Text>
                         </div>
-
-                        <Divider />
-
-                        <div>
-                            <Titulo nivel={3} style={{fontSize: 20}}>Detalles Adicionales</Titulo>
-                            <Space direction="vertical" style={{ width: '100%', marginTop: 10 }} size="small">
-                                <div style={detalleAdicionales}>
-                                    <Text type="secondary">SKU:</Text>
-                                    <Text strong>{producto.sku || 'N/A'}</Text>
-                                </div>
-                                <div style={detalleAdicionales}>
-                                    <Text type="secondary">Marca:</Text>
-                                    <Text strong>{producto.marca || 'Genérico'}</Text>
-                                </div>
-                                <div style={detalleAdicionales}>
-                                    <Text type="secondary">Proveedor:</Text>
-                                    <Text strong>{producto.proveedor || 'Local'}</Text>
-                                </div>
-                            </Space>
-                        </div>
-
                     </Space>
                 </Col>
             </Row>

@@ -44,7 +44,8 @@ vi.mock('antd', () => {
     </div>
   );
 
-  return { __esModule: true, Table, Button, Space, Tag };
+  const Typography = { Text: (props: any) => React.createElement('span', props, props.children) };
+  return { __esModule: true, Table, Button, Space, Tag, Typography };
 });
 
 import TablaOrdenes from '../TablaOrdenes';
